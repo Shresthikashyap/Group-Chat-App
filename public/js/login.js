@@ -10,6 +10,7 @@ const save = async(event) =>{
         }
 
         let response = axios.post("http://localhost:3000/user/login",loginDetails);
+        console.log('response',response)
 
         document.getElementById('success').innerHTML = `${response.data.message}`;
 

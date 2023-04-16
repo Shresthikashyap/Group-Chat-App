@@ -8,10 +8,12 @@ exports.addUser = async(req, res) => {
   try{
       const {name, email, phonenumber, password }= req.body;
 
-
+      if(name === 'undefined' || email === 'undefined' || phonenumber === 'undefined' || password=== 'undefined'){
+        res.status(500).json({error:"Something went wrong"})
+      }
       const user = await User.findOne({ where: { email } },{transaction: t});
-      if (user) {
 
+      if (user) {
         return res.status(404).json({ error: 'User already exists' });
       } 
 
@@ -33,4 +35,36 @@ exports.addUser = async(req, res) => {
           console.log(err);
           res.status(500).json({ error: 'Something went wrong' });     
     }
+}
+
+exports.getLogin = async(req,res) => {
+  const t = await sequelize.transaction();
+
+  try{
+    const {email, password} = req.body;
+
+    if (email==='undefined' || password === 'undefined') {
+      return res.status(500).json({ error: 'User not found' });
+    }
+
+    const user  = await User.findOne({where:{email}},{transaction:t})
+    
+    if(!user){ res.status(404).json({error:'User not found'})}
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if(!passwordMatch){
+      return res.status(401).json({error: 'User not authorized'});
+    }
+
+    const payload = user.dataValues;
+    const token = jwt.sign(payload,'mySecretKey')
+
+    await t.commit();
+    res.status(200).json({message: 'Logged in Successfully'})
+  }
+  catch(err){
+       await t.rollback();
+
+       res.status(500).json({error:'Something went wrong'});
+  }
 }
