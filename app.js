@@ -21,7 +21,7 @@ app.use(cors({
 
 app.use(express.static('public'));
   
-app.use('/users',userRoutes);
+app.use('/user',userRoutes);
 
 sequelize.sync()
 .then(()=>{

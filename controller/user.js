@@ -9,7 +9,7 @@ exports.addUser = async(req, res) => {
       const {name, email, phonenumber, password }= req.body;
 
 
-      const user = await User.findOne({ where: { phonenumber } },{transaction: t});
+      const user = await User.findOne({ where: { email } },{transaction: t});
       if (user) {
 
         return res.status(404).json({ error: 'User already exists' });

@@ -11,7 +11,7 @@ const save = async(event)=>{
     name,email,phonenumber,password
     }
        
-        let response = await axios.post("http://localhost:3000/users/signup",obj);
+        let response = await axios.post("http://localhost:3000/user/signup",obj);
        console.log(response);
        document.getElementById('success').innerHTML = `:${ response.data.message}`;
      
