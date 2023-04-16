@@ -6,17 +6,18 @@ const sequelize = require('../util/database');
 exports.addUser = async(req, res) => {
   const t = await sequelize.transaction();
   try{
-      const {name, email, password }= req.body;
+      const {name, email, phonenumber, password }= req.body;
+      
 
       const hashedPassword = await bcrypt.hash(password, 10); 
       
-      const newUser = await User.create({name: name, email: email, password: hashedPassword},{transaction: t});
-
+      const newUser = await User.build({name: name, email: email,phone_number: phonenumber ,password: hashedPassword},{transaction: t});
+      
       const payload = newUser.dataValues;
       const token = jwt.sign(payload,'mySecretKey')
       
       await t.commit();
-      res.status(201).json({ token: token });
+      res.status(201).json({ token: token ,message : 'Successfully signed up'});
       
   }
   catch(err){
