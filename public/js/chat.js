@@ -10,31 +10,44 @@ function parseJwt (token) {
       }
 
 window.addEventListener("DOMContentLoaded",async()=>{
-        try{
-                const name = localStorage.getItem('name');
-                if(name){ 
-                   alert(`welcome ${name}`); 
-                   localStorage.removeItem('name');
-                                   
-                   const newUser = document.getElementById('newUser');
-                   newUser.textContent = `${name} joined`;
-                }  
-
-                const token = localStorage.getItem('token');
-                
-                const response = await axios.get('http://localhost:3000/message/get-messages',{headers:{'Authorization':token}})   
-                
-                console.log(response)
-
-                for(var i=0;i<response.data.message.length;i++){
-                      showMessage(response.data.message[i])
+        try {
+                const name = localStorage.getItem("name");
+                if (name) {
+                  alert(`welcome ${name}`);
+                  localStorage.removeItem("name");
+            
+                  const newUser = document.getElementById("newUser");
+                  newUser.textContent = `${name} joined`;
                 }
-
-        }
+            
+                const token = localStorage.getItem("token");
+                 
+                const getMessages = async () => {
+                try {
+                const response = await axios.get("http://localhost:3000/message/get-messages",
+                { headers: { Authorization: token } });
+                 console.log(response);
+          
+                for (var i = 0; i < response.data.message.length; i++) {
+                showMessage(response.data.message[i]);
+                }
+        
+                } catch (error) {
+                 window.location.href = "signup.html";
+               }
+              };
+              
+                // Call the getMessages() function at a specified interval using setInterval()
+                setInterval(() => {
+                    getMessages()
+                }, 1000);
+              }
         catch(error){
                 window.location.href = 'signup.html';
         }
 })
+
+
 
 const send = async(event) => {
         try{
@@ -51,7 +64,7 @@ const send = async(event) => {
              }
              
              console.log(message)
-
+             
              const response = await axios.post("http://localhost:3000/message/post-message",msgDetails,
              {headers:{'Authorization':token}});
              console.log(response.data)
@@ -65,7 +78,9 @@ const send = async(event) => {
 function showMessage(data){
 
         const messageList = document.getElementById('messagelist');
-        const message = document.createElement('li');
+        messageList.style.display = 'none';
+        const message = document.createElement('div');
+        message.classList.add('message-box');
 
         message.textContent = data.memberName+' - '+data.message;
         

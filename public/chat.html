@@ -21,33 +21,46 @@
     body{
        background-color: rgb(226, 185, 131);
     }
+    .message-box{
+        padding: 10px;
+        background-color: #ecececf1;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin: 5px;
+    }
+    .box{
+        border: 2px ;
+        padding-left:10%;
+        padding-right: 10%;
+    }
     .row{
-       padding-top: 43%;
+        padding-top:30%;
+        padding-bottom: 5%;
     }
 
-    .items,#error{
-        text-align: center;
+    .col-md-9 {
+        padding-left: 20%;  
     }
 
     </style>
 </head>
 <body>
-    <h2>Chat App</h2>
+    <h2 style="padding-top: 2%;">Chat App</h2>
     <div class="container">
-        <div class="items"> <br>
-            <div id="newUser"></div>
+         <br> <div id="newUser"  style="text-align: center; color: green; font-weight: 700;"></div>
+          <br>
+        <div class="box"> 
+          
             <div id="memberName"></div>
-            <list id="messagelist">   
-                </list>   
+            <list id="messagelist"></list>   
         </div>
 
     <form class="row" onsubmit="send(event)">
         
-        <div id="error"></div> <br>
-        <div class="col-md-11">
-        <input type="text" class="form-control" id="text">
+        <div id="error" style="text-align: center;"></div> <br>
+        <div class="col-md-9">
+        <input type="text" class="form-control " id="text">
         </div>
-      
         <div class="col-md">
         <button class="btn btn-success" >Send</button>          
         </div>   

@@ -25,6 +25,7 @@ app.use(express.static('public'));
 app.use('/user',userRoutes);
 app.use('/message',chatRoutes);
 
+
 User.hasMany(Message);
 Message.belongsTo(User);
 
