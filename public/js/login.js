@@ -14,7 +14,10 @@ const save = async(event) =>{
 
         document.getElementById('success').innerHTML = `${response.data.message}`;
 
-        localStorage.setItem('name',response.data.name)
+        localStorage.setItem('name',response.data.name);
+        localStorage.setItem('token',response.data.token)
+
+        window.location.href = 'chat.html';
 
     }
     catch(err){

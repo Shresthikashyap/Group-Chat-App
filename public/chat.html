@@ -22,26 +22,38 @@
        background-color: rgb(226, 185, 131);
     }
     .row{
-       padding-top: 45%;
+       padding-top: 43%;
     }
+
+    .items,#error{
+        text-align: center;
+    }
+
     </style>
 </head>
 <body>
     <h2>Chat App</h2>
     <div class="container">
-    <div class="row">
-          <div id="name"></div>
-          <div id="text"></div>
+        <div class="items"> <br>
+            <div id="newUser"></div>
+            <div id="memberName"></div>
+            <list id="messagelist">   
+                </list>   
+        </div>
 
+    <form class="row" onsubmit="send(event)">
+        
+        <div id="error"></div> <br>
         <div class="col-md-11">
-        <input type="text" class="form-control" onsubmit="send(event)">
+        <input type="text" class="form-control" id="text">
         </div>
       
         <div class="col-md">
         <button class="btn btn-success" >Send</button>          
         </div>   
-    </div>
+    </form>
     </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.2/axios.min.js"></script>
 <script src="./js/chat.js"></script>
 </html>
