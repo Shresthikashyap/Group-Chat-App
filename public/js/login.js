@@ -14,6 +14,8 @@ const save = async(event) =>{
 
         document.getElementById('success').innerHTML = `${response.data.message}`;
 
+        localStorage.setItem('name',response.data.name)
+
     }
     catch(err){
         document.getElementById('failure').innerHTML = `Error: ${err.response.data.error}`

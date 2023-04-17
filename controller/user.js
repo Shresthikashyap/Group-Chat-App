@@ -26,7 +26,7 @@ exports.addUser = async(req, res) => {
       const token = jwt.sign(payload,'mySecretKey')
       
       await t.commit();
-      res.status(201).json({ token: token ,message : 'Successfully signed up'});
+      res.status(201).json({name: name, token: token ,message : 'Successfully signed up'});
       
   }
   catch(err){
@@ -60,7 +60,7 @@ exports.getLogin = async(req,res) => {
     const token = jwt.sign(payload,'mySecretKey')
 
     await t.commit();
-    res.status(200).json({message: 'Logged in Successfully'})
+    res.status(200).json({name: name,token:token, message: 'Logged in Successfully'})
   }
   catch(err){
        await t.rollback();

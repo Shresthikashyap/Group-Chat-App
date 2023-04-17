@@ -10,11 +10,11 @@
 <style>
     h2{
       text-align: center;
-      font-family: 'Helvetica', sans-serif;
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       font-size: calc( 1em + 5vmin );
       font-weight: 900;
-      color: rgb(230, 49, 17);
-      text-shadow:5px 5px 10px rgb(141, 140, 140);
+      color: rgb(46, 158, 46);
+      text-shadow:5px 5px 10px rgb(197, 192, 192);
     }
     a{
       padding-left: 30%;
@@ -25,15 +25,19 @@
         background-position: center center;
         font-weight: 600;
         padding-top: 20px;
-        background-color: rgb(233, 171, 114);
+        background-color: rgb(34, 158, 34);
     }
     .form-submit {
-        box-shadow: 20px 20px rgb(209, 107, 107);
+        box-shadow: 20px 20px rgb(49, 83, 33);
         max-width: 500px;
         margin:0 auto;
         border-radius: 20px;    
         padding: 5px; 
-        background-color: rgba(130, 165, 211, 0.829);
+        background-color: rgb(255, 255, 255);
+    }
+
+    .form-control {
+        background-color:rgb(199, 199, 199); 
     }
     
     .row{
@@ -54,37 +58,27 @@
           <h2>Sign up </h2>
        
             <div class="row">
-             
                 <label for="username" class="form-label" >Name:</label>
                 <input type="text" class="form-control" placeholder="Enter your name" id="username" required>
-              
             </div>
             
             <div class="row">
-              
                 <label for="email" class="form-label">E mail:</label>
                 <input type="email" class="form-control"  placeholder="@gmail.com" id="email" required>
-            
             </div>
 
             <div class="row">
-                
                   <label for="Phone" class="form-label"  >Phone number:</label>
                   <input type="tel" class="form-control" placeholder="Enter your Phone number" id="phonenumber" required>
-              
               </div>
             
             <div class="row">
-             
                 <label for="password" class="form-label"  >Password:</label>
                 <input type="password" class="form-control" placeholder="Enter your Password" id="password" required>
-              
             </div>
             <br>
             <div class="row">
-              
                 <button type="submit" class="btn btn-success">Sign Up</button>
-              
             </div>
             <br>
             <div id = 'success' style="font-weight:600;color: rgb(19, 112, 11); "></div>
