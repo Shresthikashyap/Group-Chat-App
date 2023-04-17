@@ -17,6 +17,18 @@ const postMessage = async(req,res) =>{
    }
 }
 
+const getMessages = async(req,res) => {
+    try{      
+
+        const message = await Message.findAll();
+    
+        res.status(200).send({message});
+       }
+       catch(error){
+        res.status(500).json({error:'!!! Something went wrong'});
+       }
+}
+
 module.exports = {
-    postMessage
+    postMessage, getMessages
 }

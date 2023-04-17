@@ -13,7 +13,7 @@ const save = async(event)=>{
        
         let response = await axios.post("http://localhost:3000/user/signup",obj);
        console.log(response);
-       document.getElementById('success').innerHTML = `:${ response.data.message}`;
+       //document.getElementById('success').innerHTML = `:${ response.data.message}`;
        
        localStorage.setItem('name',response.data.name);
        localStorage.setItem('token',response.data.token)

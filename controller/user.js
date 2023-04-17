@@ -26,7 +26,7 @@ exports.addUser = async(req, res) => {
       const token = jwt.sign(payload,'mySecretKey')
       
       await t.commit();
-      res.status(201).json({name: name, token: token ,message : 'Successfully signed up'});
+      res.status(201).json({name: name, token: token });
       
   }
   catch(err){
@@ -49,22 +49,23 @@ exports.getLogin = async(req,res) => {
 
     const user  = await User.findOne({where:{email}},{transaction:t})
     
-    if(!user){ res.status(404).json({error:'User not found'})}
+    if(!user) { return res.status(404).json({error:'User not found'})}
 
     const passwordMatch = await bcrypt.compare(password, user.password);
     if(!passwordMatch){
       return res.status(401).json({error: 'User not authorized'});
     }
 
+    console.log(user.dataValues)
+
     const payload = user.dataValues;
     const token = jwt.sign(payload,'mySecretKey')
 
     await t.commit();
-    res.status(200).json({name: name,token:token, message: 'Logged in Successfully'})
+    res.status(200).json({token:token})
   }
   catch(err){
        await t.rollback();
-
        res.status(500).json({error:'Something went wrong'});
   }
 }
