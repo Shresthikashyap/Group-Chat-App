@@ -30,11 +30,15 @@
     <h2>Chat App</h2>
     <div class="container">
     <div class="row">
+          <div id="name"></div>
+          <div id="text"></div>
+
         <div class="col-md-11">
-        <input type="text" class="form-control" id="text">
+        <input type="text" class="form-control" onsubmit="send(event)">
         </div>
+      
         <div class="col-md">
-        <button class="btn btn-success" onclick="send(event)">Send</button>          
+        <button class="btn btn-success" >Send</button>          
         </div>   
     </div>
     </div>

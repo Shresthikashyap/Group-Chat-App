@@ -22,6 +22,7 @@ app.use(cors({
 app.use(express.static('public'));
   
 app.use('/user',userRoutes);
+//app.use('/chat',chatRoutes);
 
 sequelize.sync()
 .then(()=>{

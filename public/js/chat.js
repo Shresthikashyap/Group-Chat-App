@@ -1,7 +1,8 @@
 window.addEventListener('DOMContentLoaded',async= ()=>{
-
-        const name = localStorage.getItem(name);
-
+    
+        const token = localStorage.getItem('token');
+        const decodedToken = parseJwt(token);  
+        const name = decodedToken.name;
         document.getElementById('name').innerHtml = `${name} joined`;
     
 })
