@@ -9,14 +9,14 @@ const save = async(event) =>{
             email,password
         }
 
-        let response = axios.post("http://localhost:3000/user/login",loginDetails);
+        let response = await axios.post("http://localhost:3000/user/login",loginDetails);
         
         console.log('response',response)
 
-        document.getElementById('success').innerHTML = `${response.data.message}`;
+        //document.getElementById('success').innerHTML = `${response.data.message}`;
 
         localStorage.setItem('token',response.data.token)
-
+        
         window.location.href = 'chat.html';
 
     }

@@ -47,7 +47,7 @@ exports.getLogin = async(req,res) => {
       return res.status(500).json({ error: 'User not found' });
     }
 
-    const user  = await User.findOne({where:{email}},{transaction:t})
+    const user  = await User.findOne({where:{email},transaction:t})
     
     if(!user) { return res.status(404).json({error:'User not found'})}
 
@@ -56,11 +56,9 @@ exports.getLogin = async(req,res) => {
       return res.status(401).json({error: 'User not authorized'});
     }
 
-    console.log(user.dataValues)
-
     const payload = user.dataValues;
     const token = jwt.sign(payload,'mySecretKey')
-
+    
     await t.commit();
     res.status(200).json({token:token})
   }

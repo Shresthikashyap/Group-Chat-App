@@ -21,10 +21,15 @@
     body{
        background-color: rgb(226, 185, 131);
     }
+
+    .text-dark {
+        color: green; font-weight: 700; font-size: 150%;
+    }
+
     .message-box{
         padding: 10px;
         background-color: #ecececf1;
-        border: 1px solid #ccc;
+        border: 2px solid #2b6b00;
         border-radius: 5px;
         margin: 5px;
     }
@@ -34,7 +39,7 @@
         padding-right: 10%;
     }
     .row{
-        padding-top:30%;
+        padding-top:15%;
         padding-bottom: 5%;
     }
 
@@ -47,12 +52,13 @@
 <body>
     <h2 style="padding-top: 2%;">Chat App</h2>
     <div class="container">
-         <br> <div id="newUser"  style="text-align: center; color: green; font-weight: 700;"></div>
+         <br> <div id="newUser" style="text-align: center; color: green; font-weight: 700; font-size: 150%;
+         "></div>
           <br>
         <div class="box"> 
           
-            <div id="memberName"></div>
-            <list id="messagelist"></list>   
+            <div id="oldMessageList"></div>
+            <div id="messagelist"></div>   
         </div>
 
     <form class="row" onsubmit="send(event)">

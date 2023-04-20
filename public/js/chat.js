@@ -19,36 +19,61 @@ window.addEventListener("DOMContentLoaded",async()=>{
                   const newUser = document.getElementById("newUser");
                   newUser.textContent = `${name} joined`;
                 }
-            
-                const token = localStorage.getItem("token");
+
+                let lastMsgId = -1;
+
+                const messages = JSON.parse(localStorage.getItem('messages')) || [];
+
+                const oldMsgList = document.getElementById('oldMessageList');
+                for(var i = 0; i < messages.length; i++) {  
+                    if(messages.groupId === idOfGroup){
+                     const oldMsg = document.createElement('div');
+                     oldMsg.classList.add('message-box');
+    
+                     oldMsg.textContent = messages[i].memberName+' - '+ messages[i].message;
                  
-                const getMessages = async () => {
-                try {
-                const response = await axios.get("http://localhost:3000/message/get-messages",
-                { headers: { Authorization: token } });
-                 console.log(response);
-          
-                for (var i = 0; i < response.data.message.length; i++) {
-                showMessage(response.data.message[i]);
+                     oldMsgList.appendChild(oldMsg);
+                    }
                 }
-        
-                } catch (error) {
-                 window.location.href = "signup.html";
-               }
-              };
-              
-                // Call the getMessages() function at a specified interval using setInterval()
-                setInterval(() => {
-                    getMessages()
-                }, 1000);
-              }
+
+                
+                if (messages.length > 0) {
+                    lastMsgId = messages[messages.length - 1].id;
+                }
+                
+                setInterval(()=>{
+                        getMessages(lastMsgId);
+                        document.getElementById('messagelist').textContent = ' ';
+                },5000)
+        }
         catch(error){
                 window.location.href = 'signup.html';
         }
 })
 
+const getMessages = async (lastMsgId) => {
+     
+     try {
+        console.log(lastMsgId)
+        const token = localStorage.getItem("token");
 
+        const response = await axios.get(`http://localhost:3000/message/get-message/${lastMsgId}`,
+        { headers: { Authorization: token } });
 
+        
+            console.log(response.data.message);
+        
+        if(response.data.message !== 'No messages found'){
+               for (var i = 0; i < response.data.message.length; i++) {
+               showMessage(response.data.message[i]);
+              }         
+        }
+        
+        } catch (error) {
+         window.location.href = "signup.html";
+     }
+};
+      
 const send = async(event) => {
         try{
              event.preventDefault();
@@ -62,12 +87,15 @@ const send = async(event) => {
              const msgDetails={
                 id,name, message
              }
-             
-             console.log(message)
-             
+                        
              const response = await axios.post("http://localhost:3000/message/post-message",msgDetails,
              {headers:{'Authorization':token}});
-             console.log(response.data)
+             console.log(response)
+
+             let messages = JSON.parse(localStorage.getItem('messages')) || [];
+             messages.push(response.data.messageDetails);
+             localStorage.setItem('messages', JSON.stringify(messages));
+             
              showMessage(response.data.messageDetails);
         }
         catch(err){
@@ -76,15 +104,14 @@ const send = async(event) => {
 }
 
 function showMessage(data){
-
+        
         const messageList = document.getElementById('messagelist');
-        messageList.style.display = 'none';
+        
         const message = document.createElement('div');
+        
         message.classList.add('message-box');
+    
+        message.textContent = data.memberName +' - '+ data.message;
 
-        message.textContent = data.memberName+' - '+data.message;
-        
-        messageList.appendChild(message);
-        
+       messageList.appendChild(message);   
 }
-
