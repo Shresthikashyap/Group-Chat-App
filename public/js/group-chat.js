@@ -9,7 +9,6 @@ function parseJwt (token) {
     return JSON.parse(jsonPayload);
   }
 
-  
 window.addEventListener("DOMContentLoaded",async()=>{
     try {
             const name = localStorage.getItem("userName");
