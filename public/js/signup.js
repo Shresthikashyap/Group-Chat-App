@@ -10,8 +10,17 @@ const save = async(event)=>{
     const obj= {
     name,email,phonenumber,password
     }
+<<<<<<< HEAD
        
         let response = await axios.post("http://localhost:3000/user/signup",obj);
+=======
+        
+        const groupId = localStorage.getItem('groupid')
+        console.log(groupId)
+        
+           let response = await axios.post("http://localhost:3000/user/signup",obj);
+
+>>>>>>> 76d2c29 (multiple groups)
        console.log(response);
        //document.getElementById('success').innerHTML = `:${ response.data.message}`;
        
