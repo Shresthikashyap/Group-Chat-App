@@ -23,17 +23,26 @@ const save = async(event)=>{
             response = await axios.post("http://localhost:3000/user/signup",obj);
         }
         
-       console.log(response);
-       //document.getElementById('success').innerHTML = `:${ response.data.message}`;
-       
-       localStorage.setItem('name',response.data.name);
-       localStorage.setItem('token',response.data.token)
-
-       if(groupId !== null){
-            window.location.href = `group-chat.html?groupId=${groupId}`;
+       console.log(response); 
+       if(response.data.groupDetails !== null) {
+           console.log(response.data.groupDetails);
+            
+            localStorage.setItem('groupid',response.data.groupDetails.id);
+            localStorage.setItem('groupName',response.data.groupDetails.groupName);
        }
+       console.log('here');
+      // document.getElementById('success').innerHTML = `:${ response.data.message}`;
+      
+      
+       localStorage.setItem('name',response.data.name);
+       localStorage.setItem('token',response.data.token);
+
+        if(groupId !== null){
+           // localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`);
+            window.location.href = `group-chat.html?groupId=${groupId}`;
+        }
        else{
-            window.location.href = `group-chat.html`;
+           window.location.href = `group-chat.html`;
        }
      
         }

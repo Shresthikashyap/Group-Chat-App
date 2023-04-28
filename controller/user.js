@@ -1,4 +1,5 @@
 const UserGroup = require('../model/UserGroup');
+const Group = require('../model/Group');
 const User = require('../model/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
@@ -24,9 +25,13 @@ exports.addUser = async(req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10); 
       
       const newUser = await User.create({name: name, email: email,phone_number: phonenumber ,password: hashedPassword},{transaction: t});
+      
       console.log('*******new user',newUser.dataValues.id)
+      let groupDetails;
       if(groupId !== 'undefined'){
          await UserGroup.create({userId: newUser.dataValues.id, groupId: groupId},{transaction: t})
+         groupDetails = await Group.findByPk(groupId);
+         console.log('Group details',groupDetails);
       }
 
       console.log(newUser.dataValues);
@@ -34,7 +39,7 @@ exports.addUser = async(req, res) => {
       const token = jwt.sign(payload,'mySecretKey')
       
       await t.commit();
-      res.status(201).json({name: name, token: token });
+      res.status(201).json({ name, groupDetails, token });
       
   }
   catch(err){
@@ -65,6 +70,8 @@ exports.getLogin = async(req,res) => {
     if(groupId !== 'undefined' ) {
       console.log(user.dataValues.id, groupId)
       await UserGroup.create({userId: user.dataValues.id, groupId: groupId})
+      groupDetails = await Group.findByPk(groupId);
+      console.log('Group details',groupDetails);
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
@@ -76,7 +83,7 @@ exports.getLogin = async(req,res) => {
     const token = jwt.sign(payload,'mySecretKey')
     
     await t.commit();
-    res.status(200).json({token:token})
+    res.status(200).json({groupDetails,token:token})
   }
   catch(err){
        console.log(err);

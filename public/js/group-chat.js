@@ -12,7 +12,8 @@ function parseJwt (token) {
 window.addEventListener("DOMContentLoaded",async()=>{
     try {
             const name = localStorage.getItem("userName");
-            const groupName = localStorage.getItem("groupName");            
+            const groupName = localStorage.getItem("groupName"); 
+            const groupid = localStorage.getItem('groupid');           
             if (name) {
               alert(`welcome ${name}`);
               localStorage.removeItem("userName");
@@ -77,7 +78,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
             //if(lastMsgId > 0){
             setInterval(()=>{
                     const groupId = localStorage.getItem('groupid');
-                    getMessages(lastMsgId,groupId);
+                    getMessages(lastMsgId,groupid);
                     document.getElementById('messagelist').textContent = ' ';
             },3000);
             //}

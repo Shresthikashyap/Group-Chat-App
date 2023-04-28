@@ -49,17 +49,20 @@ const getUsersGroupList = async(req,res) => {
         console.log('groupList',groupIdList);
 
          
-        let groupList=[];
-        groupIdList.forEach(async(item) => {
+        let groupList = [];
+        for (let i = 0; i < groupIdList.length; i++) {
+            const item = groupIdList[i];
             console.log('Group ID:', item.dataValues.groupId);
             let groupId = item.dataValues.groupId;
+        
             if(groupId !== null){  
                 const group = await Group.findByPk(groupId); 
-                console.log(group) ;
+                console.log(group) ;    
                 groupList.push(group);
-                console.log('group list*****',groupList)
+                console.log('group list ***** ',groupList)
             } 
-        });
+            console.log(groupList);
+        }
 
         console.log('groupList',groupList);
 

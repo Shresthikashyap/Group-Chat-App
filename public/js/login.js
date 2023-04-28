@@ -24,17 +24,23 @@ const save = async(event) =>{
         
         console.log('response',response)
 
+        if(response.data.groupDetails !== null) {
+            console.log(response.data.groupDetails);
+            localStorage.setItem('groupid',response.data.groupDetails.id);
+            localStorage.setItem('groupName',response.data.groupDetails.groupName);
+        }
+
         //document.getElementById('success').innerHTML = `${response.data.message}`;
 
         localStorage.setItem('token',response.data.token)
-        
+        localStorage.setItem('groupName',response.data.groupDetails.groupName);
         if(groupId !== null){
+           // localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`);
             window.location.href = `group-chat.html?groupId=${groupId}`;
-       }
-       else{
+        }
+        else{
             window.location.href = `group-chat.html`;
-       }
-
+        }
     }
     catch(err){
         document.getElementById('failure').innerHTML = `Error: ${err.response.data.error}`
