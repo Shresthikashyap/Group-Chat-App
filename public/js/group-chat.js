@@ -33,6 +33,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
               link.textContent = groupLink; // Add link text
             }
 
+            
             const token = localStorage.getItem('token');
             const decodedToken = await parseJwt(token);
             const userId = decodedToken.id;
