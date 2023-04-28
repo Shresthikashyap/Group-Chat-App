@@ -1,5 +1,5 @@
-const Message = require('../model/chat');
-const Group = require('../model/group')
+const UserGroup = require('../model/UserGroup');
+const Group = require('../model/Group')
 const sequelize = require('../util/database');
 
 const createGroup = async(req,res) =>{
@@ -13,6 +13,8 @@ const createGroup = async(req,res) =>{
     const newGroup= await Group.build({adminName: adminName, groupName: groupName, userId: userid});
     const newGroupDetails = await newGroup.save();
 
+    await UserGroup.create({userId:req.params.id, groupId:newGroup.dataValues.id})
+
     res.status(200).send({newGroupDetails});
    }
    catch(error){
@@ -21,33 +23,45 @@ const createGroup = async(req,res) =>{
    }
 }
 
-const getGroupList = async(req,res) => {
-    try{
-        //const {id} = req.params;
-        //console.log('User id for group list ',req.params)
+// const getGroupList = async(req,res) => {
+//     try{
+//         //const {id} = req.params;
+//         //console.log('User id for group list ',req.params)
 
-        const groupList = await Group.findAll();
+//         const groupList = await Group.findAll();
 
-       // if(!groupList)
+//        // if(!groupList)
 
-        res.status(200).json({list:groupList});
-    }
-    catch(error){
-        console.log(error);
-        res.status(500).json({error:'Something went Wrong'});
-    }
-}
+//         res.status(200).json({list:groupList});
+//     }
+//     catch(error){
+//         console.log(error);
+//         res.status(500).json({error:'Something went Wrong'});
+//     }
+// }
 
 const getUsersGroupList = async(req,res) => {
     try{
         const {id} = req.params;
         console.log('User id for group list ',req.params)
 
-        const groupList = await sequelize.query(
-            `SELECT groupId FROM usergroup WHERE userId = ${id}`,
-            { type: sequelize.QueryTypes.SELECT }
-          );
-                console.log('groupList',groupList)
+        const groupIdList = await UserGroup.findAll({where:{userId :id}});
+        console.log('groupList',groupIdList);
+
+         
+        let groupList=[];
+        groupIdList.forEach(async(item) => {
+            console.log('Group ID:', item.dataValues.groupId);
+            let groupId = item.dataValues.groupId;
+            if(groupId !== null){  
+                const group = await Group.findByPk(groupId); 
+                console.log(group) ;
+                groupList.push(group);
+                console.log('group list*****',groupList)
+            } 
+        });
+
+        console.log('groupList',groupList);
 
         res.status(200).json({list:groupList});
     }
@@ -58,5 +72,5 @@ const getUsersGroupList = async(req,res) => {
 }
 
 module.exports = {
-    createGroup, getGroupList, getUsersGroupList
+    createGroup, getUsersGroupList
 }

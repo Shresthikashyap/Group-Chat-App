@@ -1,3 +1,6 @@
+const urlSearchParams = new URLSearchParams(window.location.search);
+const groupId = urlSearchParams.get('groupId');
+console.log(groupId)
 
 const save = async(event)=>{ 
     try{
@@ -10,27 +13,37 @@ const save = async(event)=>{
     const obj= {
     name,email,phonenumber,password
     }
-<<<<<<< HEAD
-       
-        let response = await axios.post("http://localhost:3000/user/signup",obj);
-=======
-        
-        const groupId = localStorage.getItem('groupid')
-        console.log(groupId)
-        
-           let response = await axios.post("http://localhost:3000/user/signup",obj);
 
->>>>>>> 76d2c29 (multiple groups)
+        let response;
+        
+        if(groupId){
+            response = await axios.post(`http://localhost:3000/user/signup?groupId=${groupId}`,obj);
+        }
+        else{
+            response = await axios.post("http://localhost:3000/user/signup",obj);
+        }
+        
        console.log(response);
        //document.getElementById('success').innerHTML = `:${ response.data.message}`;
        
        localStorage.setItem('name',response.data.name);
        localStorage.setItem('token',response.data.token)
 
-       window.location.href = 'chat.html';
+       if(groupId !== null){
+            window.location.href = `group-chat.html?groupId=${groupId}`;
+       }
+       else{
+            window.location.href = `group-chat.html`;
+       }
      
         }
         catch(err){
             document.getElementById('failure').innerHTML = `Error: ${ err.response.data.error}`;
+            console.log(err.response.data.error)
+            if(err.response.data.error === 'User already exists' && groupId !== null){
+
+                alert(`You need to login before joining the group ${groupId}`);
+                window.location.href = `login.html?groupId=${groupId}`;
+            }
         }
     }

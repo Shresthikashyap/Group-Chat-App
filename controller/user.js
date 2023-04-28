@@ -1,4 +1,5 @@
-const User = require('../model/user');
+const UserGroup = require('../model/UserGroup');
+const User = require('../model/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const sequelize = require('../util/database');
@@ -6,6 +7,8 @@ const sequelize = require('../util/database');
 exports.addUser = async(req, res) => {
   const t = await sequelize.transaction();
   try{
+      console.log('req ***********',req.query);
+      const { groupId } = req.query;
       const {name, email, phonenumber, password }= req.body;
 
       if(name === 'undefined' || email === 'undefined' || phonenumber === 'undefined' || password=== 'undefined'){
@@ -21,6 +24,11 @@ exports.addUser = async(req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10); 
       
       const newUser = await User.create({name: name, email: email,phone_number: phonenumber ,password: hashedPassword},{transaction: t});
+      console.log('*******new user',newUser.dataValues.id)
+      if(groupId !== 'undefined'){
+         await UserGroup.create({userId: newUser.dataValues.id, groupId: groupId},{transaction: t})
+      }
+
       console.log(newUser.dataValues);
       const payload = newUser.dataValues;
       const token = jwt.sign(payload,'mySecretKey')
@@ -41,6 +49,9 @@ exports.getLogin = async(req,res) => {
   const t = await sequelize.transaction();
 
   try{
+    console.log('req ***********',req.query);
+    const { groupId } = req.query;
+
     const {email, password} = req.body;
 
     if (email==='undefined' || password === 'undefined') {
@@ -48,8 +59,13 @@ exports.getLogin = async(req,res) => {
     }
 
     const user  = await User.findOne({where:{email},transaction:t})
-    
+    //console.log('user id', user)
     if(!user) { return res.status(404).json({error:'User not found'})}
+
+    if(groupId !== 'undefined' ) {
+      console.log(user.dataValues.id, groupId)
+      await UserGroup.create({userId: user.dataValues.id, groupId: groupId})
+    }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
     if(!passwordMatch){
@@ -63,6 +79,7 @@ exports.getLogin = async(req,res) => {
     res.status(200).json({token:token})
   }
   catch(err){
+       console.log(err);
        await t.rollback();
        res.status(500).json({error:'Something went wrong'});
   }

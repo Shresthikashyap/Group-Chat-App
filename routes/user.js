@@ -4,12 +4,8 @@ const router = express.Router();
 
 const userController = require('../controller/user');
 
-router.post('/signup',userController.addUser);
-<<<<<<< HEAD
-=======
-router.post('signup/:groupid',userController.addUser);
+router.post('/signup?:id',userController.addUser);
 
->>>>>>> 76d2c29 (multiple groups)
-router.post('/login',userController.getLogin);
+router.post('/login?:id',userController.getLogin);
 
 module.exports = router;

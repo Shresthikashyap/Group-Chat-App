@@ -1,3 +1,7 @@
+const urlSearchParams = new URLSearchParams(window.location.search);
+const groupId = urlSearchParams.get('groupId');
+console.log(groupId)
+
 const save = async(event) =>{
     try{
         event.preventDefault();
@@ -9,7 +13,14 @@ const save = async(event) =>{
             email,password
         }
 
-        let response = await axios.post("http://localhost:3000/user/login",loginDetails);
+        let response;
+        console.log('here')
+        if(groupId){
+            response = await axios.post(`http://localhost:3000/user/login?groupId=${groupId}`,loginDetails);
+        }
+        else{
+            response = await axios.post("http://localhost:3000/user/login",loginDetails);
+        }
         
         console.log('response',response)
 
@@ -17,7 +28,12 @@ const save = async(event) =>{
 
         localStorage.setItem('token',response.data.token)
         
-        window.location.href = 'chat.html';
+        if(groupId !== null){
+            window.location.href = `group-chat.html?groupId=${groupId}`;
+       }
+       else{
+            window.location.href = `group-chat.html`;
+       }
 
     }
     catch(err){

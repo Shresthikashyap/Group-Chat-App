@@ -32,7 +32,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
               link.href = groupLink;
               link.textContent = groupLink; // Add link text
             }
-
+            
+            
             const token = localStorage.getItem('token');
             const decodedToken = await parseJwt(token);
             const userId = decodedToken.id;
@@ -50,8 +51,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
                     groupDiv.addEventListener('click', () => {
                       localStorage.setItem('groupid', groupId);
                       localStorage.setItem('groupName', groupName);
-                      localStorage.setItem('link',`http://localhost:3000/chat.html/${groupId}`) 
-                      window.location.href = `chat.html?groupId=${groupId}`;
+                      localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`) // group link to share
+                      window.location.href = `group-chat.html?groupId=${groupId}`;
                     });
                   
                     groupList.appendChild(groupDiv);

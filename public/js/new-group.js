@@ -32,7 +32,7 @@ const newGroup = async(event) =>{
         localStorage.setItem('groupid',response.data.newGroupDetails.id);
         localStorage.setItem('groupName',response.data.newGroupDetails.groupName);
         const groupId = response.data.newGroupDetails.id;
-        localStorage.setItem('link',`http://localhost:3000/chat.html/${groupId}`) 
+        localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`) // group link to share 
         window.location.href = `group-chat.html?groupId=${groupId}`;
     }
     catch(error){
