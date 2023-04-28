@@ -7,8 +7,8 @@ const controller = require('../controller/group');
 
 router.post('/new-group/:id',userauthentication.authenticate,controller.createGroup);
 
-router.get('/group-list',userauthentication.authenticate,controller.groupList);
+router.get('/group-list',userauthentication.authenticate,controller.getGroupList);
 
-router.get('/group-list/:id',userauthentication.authenticate,controller.getGroupList);
+router.get('/group-list/:id',userauthentication.authenticate,controller.getUsersGroupList);
 
 module.exports = router;

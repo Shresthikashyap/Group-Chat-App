@@ -55,10 +55,14 @@ Message.belongsTo(User);
 Group.hasMany(Message);
 Message.belongsTo(Group);
 
-User.hasOne(Group);
+//User.hasMany(Group);
 
+<<<<<<< HEAD
 >>>>>>> 76d2c29 (multiple groups)
 sequelize.sync()
+=======
+sequelize.sync({force:true})
+>>>>>>> 7f433b4 (mutilpe groups)
 .then(()=>{
     app.listen(3000,()=>{
         console.log('server is listening');

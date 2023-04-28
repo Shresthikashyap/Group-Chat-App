@@ -21,7 +21,7 @@ const createGroup = async(req,res) =>{
    }
 }
 
-const groupList = async(req,res) => {
+const getGroupList = async(req,res) => {
     try{
         //const {id} = req.params;
         //console.log('User id for group list ',req.params)
@@ -38,13 +38,13 @@ const groupList = async(req,res) => {
     }
 }
 
-const getGroupList = async(req,res) => {
+const getUsersGroupList = async(req,res) => {
     try{
         const {id} = req.params;
         console.log('User id for group list ',req.params)
 
         const groupList = await sequelize.query(
-            `SELECT * FROM Groups WHERE id IN (SELECT groupId FROM usergroup WHERE userId = ${id})`,
+            `SELECT groupId FROM usergroup WHERE userId = ${id}`,
             { type: sequelize.QueryTypes.SELECT }
           );
                 console.log('groupList',groupList)
@@ -58,5 +58,5 @@ const getGroupList = async(req,res) => {
 }
 
 module.exports = {
-    createGroup, groupList, getGroupList
+    createGroup, getGroupList, getUsersGroupList
 }
