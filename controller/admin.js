@@ -73,13 +73,17 @@ const removeMember = async(req,res) => {
 
 const changeAdmin = async(req,res) => {
     try{
-        const { userId } = req.params;
-        console.log(userId);   
+        const { userId, groupId } = req.params;
+        console.log('change admin',userId,groupId); 
         
-        const id = await Group.findOne({where:{userId:userId}});
-        console.log(id);
+        const user = await User.findByPk(userId);
+        console.log(user.dataValues.name)
+        const userName = user.dataValues.name;
+        
+        const group = await Group.findByPk(groupId);
+        console.log(group.dataValues);
 
-        const admin = await Group.update({where:{userId:userId}});
+        const admin = await group.update({userId:userId, adminName:userName});
          
         res.status(200).json({admin, message: `changed successfully`});
     }

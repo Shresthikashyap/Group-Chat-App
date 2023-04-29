@@ -12,6 +12,6 @@ router.get('/checkadmin/:userId/:groupId',userauthentication.authenticate,contro
 
 router.get('/removeuser/:userId/:groupId',userauthentication.authenticate,controller.removeMember);
 
-router.get('/changeadmin/:userId',userauthentication.authenticate,controller.changeAdmin);
+router.get('/changeadmin/:userId/:groupId',userauthentication.authenticate,controller.changeAdmin);
 
 module.exports = router;

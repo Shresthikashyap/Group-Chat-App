@@ -28,8 +28,9 @@ window.addEventListener("DOMContentLoaded",async()=>{
             }
                
             const token = localStorage.getItem('token');
-            const decodedToken = await parseJwt(token); 
+            const decodedToken = await parseJwt(token); console.log('decoded token ',decodedToken)
             const userId = decodedToken.id;
+
             console.log('user id',decodedToken.id)
             const groups = await axios.get(`http://localhost:3000/group/group-list/${userId}`,{headers:{Authorization:token}}) 
             console.log('Group list ',groups);
@@ -51,14 +52,18 @@ window.addEventListener("DOMContentLoaded",async()=>{
                   groupList.appendChild(groupDiv);
             });
              
+
+            // Main thing starts from here
             const admin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
             console.log(admin.data)  //check admin
+            console.log('user id ',userId)
            
                     const memberList = await axios.get(`http://localhost:3000/admin/memberlist/${groupId}`,{
                         headers:{Authorization:token}
                     })
-                    console.log('memberlist',memberList);
+                    console.log('memberlist',memberList);  
         
+                    // Members of the group
                     const members = document.getElementById('memberlist');
                     memberList.data.list.forEach((member) => {
                         const user = document.createElement('div');
@@ -80,8 +85,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
                             makeAdmin.className = 'btn btn-success btn-sm';
                             makeAdmin.textContent = 'Make Admin';
                             makeAdmin.addEventListener('click', async()=>{
-                            console.log(memberId)
-                            await changeAdmin(userId); 
+                            console.log(memberId,groupId);
+                            await changeAdmin(memberId,groupId); 
                             })
 
                             user.append(removeBtn);
@@ -113,16 +118,17 @@ window.addEventListener("DOMContentLoaded",async()=>{
         }
     }
 
-    const changeAdmin = async(userId) => {
+    const changeAdmin = async(memberId, _groupId) => {
         try{
+          console.log(memberId,_groupId)
           const token = localStorage.getItem('token')
-          const adminDetails = await axios.get(`http://localhost:3000/admin/changeadmin/${userId}`,
+          const adminDetails = await axios.get(`http://localhost:3000/admin/changeadmin/${memberId}/${_groupId}`,
           {headers:{Authorization:token}});
 
           console.log(adminDetails.data);
-          alert('You no longer an admin of this Group');
+          alert('You are no longer an admin of this Group');
           const groupId = localStorage.getItem('groupId');
-          window.location.href = `admin.html?groupId=${groupId}`;
+          window.location.href = `admin.html?groupId=${_groupId}`;
         }
         catch(error){
             document.getElementById('failure').textContent = 'Something went wrong';
