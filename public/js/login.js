@@ -31,9 +31,9 @@ const save = async(event) =>{
         }
 
         //document.getElementById('success').innerHTML = `${response.data.message}`;
-
-        localStorage.setItem('token',response.data.token)
-        localStorage.setItem('groupName',response.data.groupDetails.groupName);
+        localStorage.setItem('name',response.data.name);
+        localStorage.setItem('token',response.data.token);
+        //localStorage.setItem('groupName',response.data.groupDetails.groupName);
         if(groupId !== null){
            // localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`);
             window.location.href = `group-chat.html?groupId=${groupId}`;

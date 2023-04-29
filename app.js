@@ -10,6 +10,7 @@ const UserGroup = require('./model/UserGroup');
 const userRoutes = require('./routes/user');
 const chatRoutes = require('./routes/chat');
 const groupRoutes = require('./routes/group');
+const adminRoutes = require('./routes/admin');
 
 var cors = require('cors');
 const app = express();
@@ -26,6 +27,7 @@ app.use(express.static('public'));
 app.use('/user',userRoutes);
 app.use('/message',chatRoutes);
 app.use('/group',groupRoutes);
+app.use('/admin',adminRoutes);
 
 User.belongsToMany(Group, { through: UserGroup });
 Group.belongsToMany(User, { through: UserGroup });

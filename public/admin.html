@@ -21,18 +21,6 @@
     body{
       background-color: rgb(106, 196, 106);        }
 
-    .text-dark {
-        color: green; font-weight: 700; font-size: 150%;
-    }
-
-    .message-box{
-        padding: 10px;
-        background-color: #ecececf1;
-        border: 2px solid #2b6b00;
-        border-radius: 5px;
-        margin: 5px;
-    }
-
   .right-column {
     width: 25%;
     float: right;
@@ -52,7 +40,7 @@
 <body>
     <h1 style="padding-top: 2%;" >Chat App</h1><br>
     <div class="container">
-         <br> <div id="newUser" style="text-align: center; color: green; font-weight: 700; font-size: 120%;"></div>
+         <br> <div id="failure" style="text-align: center; color: rgb(167, 62, 13); font-weight: 700; font-size: 120%;"></div>
          <br> 
          <div class="chat-box" > <br>
          <h2 id="group"></h2><div id="info" ></div>
@@ -60,18 +48,8 @@
           <a id="link" style="padding-left: 27%;"></a>
         <br> <br>
             
-            <div id="oldMessageList" style="padding-left: 10%; padding-right: 10%;"></div>
-             <div id="messagelist" style="padding-left: 10%; padding-right: 10%;"> </div>
-            <form class="row" style="padding-top: 35%;" onsubmit="send(event)">
-              
-              <div id="error" style="text-align: center;"></div> <br>
-              <div class="col-md-9" style="padding-left: 10%; padding-bottom: 2%;">
-              <input type="text" class="form-control" id="text">
-              </div>
-              <div class="col-md">
-              <button class="btn btn-success" >Send</button>          
-              </div>   
-            </form>
+            <div id="memberlist" style="padding-left: 4%; padding-right: 4%;"></div>
+            <br>  
         </div>
         
             <div class="right-column">
@@ -84,5 +62,5 @@
     </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.2/axios.min.js"></script>
-<script src="./js/group-chat.js"></script>
+<script src="./js/admin.js"></script>
 </html>

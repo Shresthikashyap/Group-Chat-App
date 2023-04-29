@@ -3,23 +3,23 @@ const Message = require('../model/Chat');
 const sequelize = require('../util/database')
 
 const postGroupMessage = async(req,res) =>{
-    const t = await sequelize.transaction();
+   // const t = await sequelize.transaction();
     try{      
      const { groupid } = req.params;
      const { id,name, message} = req.body; 
      console.log(req.body);
      console.log('group id',req.params);
  
-     const messageDetails = await Message.create({message:message, memberName:name, userId:id, groupId: groupid},{transaction:t});
-     const userGroup = await UserGroup.create({userId: id, groupId:groupid},{transaction:t});
+     const messageDetails = await Message.create({message:message, memberName:name, userId:id, groupId: groupid});
+     const userGroup = await UserGroup.create({userId: id, groupId:groupid});
 
           console.log('usergroup ********** ',userGroup);
 
-     await t.commit();
+    // await t.commit();
      res.status(200).send({messageDetails});
     }
     catch(error){
-      await t.rollback();
+      //await t.rollback();
      res.status(500).json({error:'!!! Something went wrong'});
     }
  }

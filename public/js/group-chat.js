@@ -11,19 +11,31 @@ function parseJwt (token) {
 
 window.addEventListener("DOMContentLoaded",async()=>{
     try {
-            const name = localStorage.getItem("userName");
+            const name = localStorage.getItem("name");
             const groupName = localStorage.getItem("groupName"); 
             const groupid = localStorage.getItem('groupid');           
-            if (name) {
+            if (name ) {
               alert(`welcome ${name}`);
-              localStorage.removeItem("userName");
+              localStorage.removeItem("name");
         
               const newUser = document.getElementById("newUser");
               newUser.textContent = `${name} joined the ${groupName}`;
             }
            
             if(groupName){
-              document.getElementById('group').textContent = groupName;
+              const group = document.getElementById('group');
+              group.textContent = `${groupName}  `;
+
+              const infoBtn = document.getElementById('info');
+              infoBtn.className = 'btn btn-success btn-sm';
+              infoBtn.addEventListener('click',()=>{
+                localStorage.setItem('groupId',groupId);
+                localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`) // group link to share
+                window.location.href = `admin.html?groupId=${groupId}`;
+              }) 
+              infoBtn.textContent = 'Details';
+              
+              group.appendChild(infoBtn);
             }
 
             const groupLink = localStorage.getItem("link");
@@ -159,14 +171,13 @@ const send = async(event) => {
 function showMessage(data){
     
     const messageList = document.getElementById('messagelist');
-    
-    const message = document.createElement('div');
-    
+    const message = document.createElement('div'); 
     message.classList.add('message-box');
    
     message.innerHTML = data.memberName +' - '+ data.message;
     
    messageList.appendChild(message);
-
 };
+
+
 

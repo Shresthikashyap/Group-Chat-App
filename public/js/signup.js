@@ -26,13 +26,11 @@ const save = async(event)=>{
        console.log(response); 
        if(response.data.groupDetails !== null) {
            console.log(response.data.groupDetails);
-            
             localStorage.setItem('groupid',response.data.groupDetails.id);
             localStorage.setItem('groupName',response.data.groupDetails.groupName);
        }
        console.log('here');
       // document.getElementById('success').innerHTML = `:${ response.data.message}`;
-      
       
        localStorage.setItem('name',response.data.name);
        localStorage.setItem('token',response.data.token);
