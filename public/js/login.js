@@ -14,7 +14,7 @@ const save = async(event) =>{
         }
 
         let response;
-        console.log('here')
+
         if(groupId){
             response = await axios.post(`http://localhost:3000/user/login?groupId=${groupId}`,loginDetails);
         }
@@ -35,7 +35,7 @@ const save = async(event) =>{
         localStorage.setItem('token',response.data.token);
         //localStorage.setItem('groupName',response.data.groupDetails.groupName);
         if(groupId !== null){
-           // localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`);
+            localStorage.removeItem('link');
             window.location.href = `group-chat.html?groupId=${groupId}`;
         }
         else{

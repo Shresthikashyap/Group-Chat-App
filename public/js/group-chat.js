@@ -17,9 +17,11 @@ window.addEventListener("DOMContentLoaded",async()=>{
             if (name ) {
               alert(`welcome ${name}`);
               localStorage.removeItem("name");
-        
+              
+              if(groupName){
               const newUser = document.getElementById("newUser");
               newUser.textContent = `${name} joined the ${groupName}`;
+              }
             }
            
             if(groupName){
@@ -30,7 +32,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
               infoBtn.className = 'btn btn-success btn-sm';
               infoBtn.addEventListener('click',()=>{
                 localStorage.setItem('groupId',groupId);
-                localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`) // group link to share
+                //localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`) // group link to share
                 window.location.href = `admin.html?groupId=${groupId}`;
               }) 
               infoBtn.textContent = 'Details';
@@ -61,10 +63,12 @@ window.addEventListener("DOMContentLoaded",async()=>{
                     groupDiv.style.paddingLeft = '27%';
                     groupDiv.style.fontWeight = "bold";
                                           
-                    groupDiv.addEventListener('click', () => {
+                    groupDiv.addEventListener('click', async() => {
                       localStorage.setItem('groupid', groupId);
                       localStorage.setItem('groupName', groupName);
-                      localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`) // group link to share
+                      const admin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
+                      if(admin.data.message !== 'false') { localStorage.setItem('link',`http://localhost:3000/group-chat.html?groupId=${groupid}`)}
+                      else{ localStorage.removeItem('link') }
                       window.location.href = `group-chat.html?groupId=${groupId}`;
                     });
                   

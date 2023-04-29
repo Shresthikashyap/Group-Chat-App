@@ -11,9 +11,6 @@ const postGroupMessage = async(req,res) =>{
      console.log('group id',req.params);
  
      const messageDetails = await Message.create({message:message, memberName:name, userId:id, groupId: groupid});
-     const userGroup = await UserGroup.create({userId: id, groupId:groupid});
-
-          console.log('usergroup ********** ',userGroup);
 
     // await t.commit();
      res.status(200).send({messageDetails});

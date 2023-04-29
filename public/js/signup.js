@@ -2,6 +2,11 @@ const urlSearchParams = new URLSearchParams(window.location.search);
 const groupId = urlSearchParams.get('groupId');
 console.log(groupId)
 
+const userExists = window.confirm('Are you already an user?');
+if(userExists === true){
+  window.location.href = `login.html?groupId=${groupId}`;
+} 
+
 const save = async(event)=>{ 
     try{
     event.preventDefault(); 
@@ -29,14 +34,14 @@ const save = async(event)=>{
             localStorage.setItem('groupid',response.data.groupDetails.id);
             localStorage.setItem('groupName',response.data.groupDetails.groupName);
        }
-       console.log('here');
+    
       // document.getElementById('success').innerHTML = `:${ response.data.message}`;
       
        localStorage.setItem('name',response.data.name);
        localStorage.setItem('token',response.data.token);
 
         if(groupId !== null){
-           // localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`);
+            localStorage.removeItem('link');
             window.location.href = `group-chat.html?groupId=${groupId}`;
         }
        else{

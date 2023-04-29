@@ -64,6 +64,7 @@ exports.getLogin = async(req,res) => {
     }
 
     const user  = await User.findOne({where:{email},transaction:t})
+    const name = user.dataValues.name;
     //console.log('user id', user)
     if(!user) { return res.status(404).json({error:'User not found'})}
 
@@ -83,7 +84,7 @@ exports.getLogin = async(req,res) => {
     const token = jwt.sign(payload,'mySecretKey')
     
     await t.commit();
-    res.status(200).json({groupDetails,token:token})
+    res.status(200).json({name,groupDetails,token:token})
   }
   catch(err){
        console.log(err);

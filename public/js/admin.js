@@ -43,9 +43,12 @@ window.addEventListener("DOMContentLoaded",async()=>{
                     groupDiv.style.paddingLeft = '27%';
                     groupDiv.style.fontWeight = "bold";
                                           
-                    groupDiv.addEventListener('click', () => {
+                    groupDiv.addEventListener('click', async() => {
                       localStorage.setItem('groupid', groupid);
                       localStorage.setItem('groupName', groupName);
+                      const admin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
+                      if(admin.data.message !== 'false') { localStorage.setItem('link',`http://localhost:3000/group-chat.html?groupId=${groupid}`)}
+                      else{ localStorage.removeItem('link') }
                       window.location.href = `group-chat.html?groupId=${groupid}`;
                     });
                   
@@ -55,8 +58,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
 
             // Main thing starts from here
             const admin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
-            console.log(admin.data)  //check admin
-            console.log('user id ',userId)
+            console.log('admin data',admin.data.adminId.userId)  //check admin
+            let adminId = admin.data.adminId.userId;
            
                     const memberList = await axios.get(`http://localhost:3000/admin/memberlist/${groupId}`,{
                         headers:{Authorization:token}
@@ -65,15 +68,24 @@ window.addEventListener("DOMContentLoaded",async()=>{
         
                     // Members of the group
                     const members = document.getElementById('memberlist');
-                    memberList.data.list.forEach((member) => {
+
+/*memberlist the loop */ memberList.data.list.forEach((member) => {
                         const user = document.createElement('div');
-                        user.textContent = `${member.name} - ${member.email} - ${member.phone_number} `;
-                        user.style.fontWeight = "bold";
+                          console.log(member.id,adminId)
+                         if(adminId === member.id){
+                          user.textContent = `Admin : ${member.name} - ${member.email} - ${member.phone_number}  `;
+                          user.style.fontWeight = 'bold';
+                          user.style.color = 'green';                            
+                         }
+                         else{
+                         user.textContent = `Member : ${member.name} - ${member.email} - ${member.phone_number} `;
+                          user.style.fontWeight = "bold";
+                         }                 
                         
                         if(admin.data.message !== 'false'){ // *************  only for admins  ***********
                           
                           const memberId = member.id;
-                          if(memberId !== userId){
+                          if(memberId !== userId){      // obviously only show to the user who is admin 
                              const removeBtn = document.createElement('button');
                              removeBtn.className = 'btn btn-danger btn-sm';
                              removeBtn.textContent = 'Remove';
@@ -127,7 +139,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
 
           console.log(adminDetails.data);
           alert('You are no longer an admin of this Group');
-          const groupId = localStorage.getItem('groupId');
+          localStorage.removeItem('link');
           window.location.href = `admin.html?groupId=${_groupId}`;
         }
         catch(error){

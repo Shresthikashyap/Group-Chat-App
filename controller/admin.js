@@ -43,11 +43,13 @@ const checkAdmin = async(req,res) => {
         
         const admin = await Group.findOne({where:{id:groupId, userId:userId}});
         console.log(admin);
-        
-        if (admin) {
-            res.status(200).json({ message: 'true' });
+
+        const adminId = await Group.findOne({where:{id:groupId}});
+
+        if (admin) {   
+            res.status(200).json({ adminId, message: 'true' });
         } else {
-            res.status(200).json({ message: 'false' });
+            res.status(200).json({ adminId, message: 'false' });
         }
     }
     catch(err){
