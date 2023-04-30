@@ -12,7 +12,7 @@ function parseJwt (token) {
 window.addEventListener("DOMContentLoaded",async()=>{
     try {
             const groupName = localStorage.getItem("groupName");
-            const groupId = localStorage.getItem('groupId') 
+            const groupId = localStorage.getItem('groupid') 
             console.log(groupName)
             if(groupName){
               const group = document.getElementById('group');
@@ -60,7 +60,18 @@ window.addEventListener("DOMContentLoaded",async()=>{
             const admin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
             console.log('admin data',admin.data.adminId.userId)  //check admin
             let adminId = admin.data.adminId.userId;
-           
+
+                if(admin.data.message !== 'false'){
+                  const group = document.getElementById('group');
+                  const deleteGroup = document.createElement('button');
+                  deleteGroup.className = 'btn btn-danger btn-sm';
+                  deleteGroup.textContent = 'Delete Group';
+                  deleteGroup.addEventListener('click', async() => {
+                  await deleteTheGroup(groupId);  //to delete the group  
+                  })
+                 group.append(deleteGroup);              
+                }
+   
                     const memberList = await axios.get(`http://localhost:3000/admin/memberlist/${groupId}`,{
                         headers:{Authorization:token}
                     })
@@ -69,7 +80,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
                     // Members of the group
                     const members = document.getElementById('memberlist');
 
-/*memberlist the loop */ memberList.data.list.forEach((member) => {
+                      memberList.data.list.forEach((member) => {         /*memberlist the loop */
                         const user = document.createElement('div');
                           console.log(member.id,adminId)
                          if(adminId === member.id){
@@ -83,14 +94,14 @@ window.addEventListener("DOMContentLoaded",async()=>{
                          }                 
                         
                         if(admin.data.message !== 'false'){ // *************  only for admins  ***********
-                          
+
                           const memberId = member.id;
-                          if(memberId !== userId){      // obviously only show to the user who is admin 
+                          if(memberId !== adminId){      // obviously only show to the user who is admin 
                              const removeBtn = document.createElement('button');
                              removeBtn.className = 'btn btn-danger btn-sm';
                              removeBtn.textContent = 'Remove';
                              removeBtn.addEventListener('click',async()=>{
-                             await removeMember(memberId,groupId);
+                             await removeMember(memberId,groupId);   // to remove the member
                              })
         
                             const makeAdmin = document.createElement('button');
@@ -98,7 +109,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
                             makeAdmin.textContent = 'Make Admin';
                             makeAdmin.addEventListener('click', async()=>{
                             console.log(memberId,groupId);
-                            await changeAdmin(memberId,groupId); 
+                            await changeAdmin(memberId,groupId);    //to remove the admin
                             })
 
                             user.append(removeBtn);
@@ -145,4 +156,24 @@ window.addEventListener("DOMContentLoaded",async()=>{
         catch(error){
             document.getElementById('failure').textContent = 'Something went wrong';
         }
+    }
+
+    const deleteTheGroup = async(groupId) => {
+      try{
+          console.log(groupId);
+          const token = localStorage.getItem('token'); 
+          const group = await axios.get(`http://localhost:3000/admin/deletegroup/${groupId}`,{
+            headers:{Authorization:token}});
+
+          console.log(group.data.message);
+          localStorage.removeItem('link');
+          localStorage.removeItem('groupid');
+          localStorage.removeItem('groupName');
+          alert('Group deleted successfully')
+          window.location.href = `group-chat.html`;
+
+      }
+      catch(error){   
+        document.getElementById('failure').textContent = 'Something went wrong';
+      }
     }

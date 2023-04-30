@@ -2,10 +2,12 @@ const urlSearchParams = new URLSearchParams(window.location.search);
 const groupId = urlSearchParams.get('groupId');
 console.log(groupId)
 
-const userExists = window.confirm('Are you already an user?');
-if(userExists === true){
-  window.location.href = `login.html?groupId=${groupId}`;
-} 
+if(groupId){
+    const userExists = window.confirm('if you already have an account then login?');
+    if(userExists === true){
+        window.location.href = `login.html?groupId=${groupId}`;
+    } 
+}
 
 const save = async(event)=>{ 
     try{
@@ -16,7 +18,7 @@ const save = async(event)=>{
     const password = event.target.password.value;
  
     const obj= {
-    name,email,phonenumber,password
+        name,email,phonenumber,password
     }
 
         let response;
@@ -30,7 +32,7 @@ const save = async(event)=>{
         
        console.log(response); 
        if(response.data.groupDetails !== null) {
-           console.log(response.data.groupDetails);
+            console.log(response.data.groupDetails);
             localStorage.setItem('groupid',response.data.groupDetails.id);
             localStorage.setItem('groupName',response.data.groupDetails.groupName);
        }

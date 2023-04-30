@@ -14,7 +14,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
             const name = localStorage.getItem("name");
             const groupName = localStorage.getItem("groupName"); 
             const groupid = localStorage.getItem('groupid');           
-            if (name ) {
+            if (name) {
               alert(`welcome ${name}`);
               localStorage.removeItem("name");
               
@@ -31,7 +31,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
               const infoBtn = document.getElementById('info');
               infoBtn.className = 'btn btn-success btn-sm';
               infoBtn.addEventListener('click',()=>{
-                localStorage.setItem('groupId',groupId);
+                localStorage.setItem('groupid',groupId);
                 //localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`) // group link to share
                 window.location.href = `admin.html?groupId=${groupId}`;
               }) 
@@ -67,7 +67,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
                       localStorage.setItem('groupid', groupId);
                       localStorage.setItem('groupName', groupName);
                       const admin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
-                      if(admin.data.message !== 'false') { localStorage.setItem('link',`http://localhost:3000/group-chat.html?groupId=${groupid}`)}
+                      if(admin.data.message !== 'false') { localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupid}`)}
                       else{ localStorage.removeItem('link') }
                       window.location.href = `group-chat.html?groupId=${groupId}`;
                     });

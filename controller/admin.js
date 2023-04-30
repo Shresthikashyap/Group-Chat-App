@@ -1,7 +1,8 @@
 const UserGroup = require('../model/UserGroup');
 const User = require('../model/User');
 const Group = require('../model/Group');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const sequelize = require('../util/database');
 
 const getMembers = async(req,res) =>  {
     try{
@@ -95,6 +96,25 @@ const changeAdmin = async(req,res) => {
     }
 }
 
+const deleteGroup = async(req,res) => {
+    const t = await sequelize.transaction();
+    try{
+        const {groupId} = req.params;
+        console.log(groupId);
+
+        await UserGroup.destroy({where:{groupId:groupId}},{trensaction:t});
+        await Group.destroy({where:{id:groupId}},{transaction:t});
+
+        t.commit();
+        res.status(200).json({message:`deleted successfully`});
+    }
+    catch(err){
+        console.log(err);
+        t.rollback();
+        res.status(500).json({error:`Something went wrong`}) ;     
+    }
+}
+
 module.exports = {
-    getMembers, checkAdmin, removeMember, changeAdmin
+    getMembers, checkAdmin, removeMember, changeAdmin, deleteGroup
 }

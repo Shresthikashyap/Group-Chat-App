@@ -14,4 +14,6 @@ router.get('/removeuser/:userId/:groupId',userauthentication.authenticate,contro
 
 router.get('/changeadmin/:userId/:groupId',userauthentication.authenticate,controller.changeAdmin);
 
+router.get('/deletegroup/:groupId',userauthentication.authenticate,controller.deleteGroup)
+
 module.exports = router;
