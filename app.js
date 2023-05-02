@@ -40,7 +40,7 @@ Message.belongsTo(Group);
 
 User.hasMany(Group);
 
-sequelize.sync()
+sequelize.sync({force:true})
 .then(()=>{
     app.listen(3000,()=>{
         console.log('server is listening');

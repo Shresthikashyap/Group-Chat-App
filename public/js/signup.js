@@ -18,7 +18,7 @@ const save = async(event)=>{
     const password = event.target.password.value;
  
     const obj= {
-        name,email,phonenumber,password
+        name, email, phonenumber, password
     }
 
         let response;
