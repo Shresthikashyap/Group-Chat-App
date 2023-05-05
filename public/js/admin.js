@@ -47,7 +47,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
                       localStorage.setItem('groupid', groupid);
                       localStorage.setItem('groupName', groupName);
                       const admin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
-                      if(admin.data.message !== 'false') { localStorage.setItem('link',`http://localhost:3000/group-chat.html?groupId=${groupid}`)}
+                      if(admin.data.message !== 'false') { localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupid}`)}
                       else{ localStorage.removeItem('link') }
                       window.location.href = `group-chat.html?groupId=${groupid}`;
                     });
@@ -118,6 +118,11 @@ window.addEventListener("DOMContentLoaded",async()=>{
                       }
                         members.appendChild(user);
                     })
+
+                    //get stored files
+                    document.getElementById('file-container').addEventListener('click', async() => {
+                      await getStoredFiles(groupId);
+                    })
                 
         }
         catch(err){
@@ -174,6 +179,31 @@ window.addEventListener("DOMContentLoaded",async()=>{
 
       }
       catch(error){   
+        document.getElementById('failure').textContent = 'Something went wrong';
+      }
+    }
+
+  const getStoredFiles = async(groupId) => {
+      try{
+          const token = localStorage.getItem('token'); 
+          const storedFiles = await axios.get(`http://localhost:3000/file/getfiles/${groupId}`,
+          {headers:{Authorization:token}});
+
+          console.log(storedFiles.data);
+
+          const Files = document.createElement('li');
+          storedFiles.data.forEach((file) => {
+            const File = document.createElement('ul');
+
+            File.href = file.url;
+            File.textContent = file.url;
+            
+            Files.appendChild(File);
+          })
+          
+      }
+      catch(err){
+        console.log(err);
         document.getElementById('failure').textContent = 'Something went wrong';
       }
     }

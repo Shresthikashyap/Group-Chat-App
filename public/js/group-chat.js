@@ -1,3 +1,12 @@
+const socket = io();
+
+socket.on('connect', ()=>{
+    console.log('Server is Printing it to the client side',socket.id)
+    // const groupId = localStorage.getItem('groupid');
+    // socket.emit('joinRoom', groupId)
+})
+
+
 /********************  decode the token  *****************/
 function parseJwt (token) {
     var base64Url = token.split('.')[1];
@@ -34,7 +43,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
                 localStorage.setItem('groupid',groupId);
                 //localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`) // group link to share
                 window.location.href = `admin.html?groupId=${groupId}`;
-              }) 
+              })
               infoBtn.textContent = 'Details';
               
               group.appendChild(infoBtn);
@@ -47,7 +56,6 @@ window.addEventListener("DOMContentLoaded",async()=>{
               link.href = groupLink;
               link.textContent = groupLink; // Add link text
             }
-            
             
             const token = localStorage.getItem('token');
             const decodedToken = await parseJwt(token);
@@ -67,12 +75,13 @@ window.addEventListener("DOMContentLoaded",async()=>{
                       localStorage.setItem('groupid', groupId);
                       localStorage.setItem('groupName', groupName);
                       const admin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
-                      if(admin.data.message !== 'false') { localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupid}`)}
+                      if(admin.data.message !== 'false') 
+                      { localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupid}`)}
                       else{ localStorage.removeItem('link') }
                       window.location.href = `group-chat.html?groupId=${groupId}`;
                     });
                   
-                    groupList.appendChild(groupDiv);
+                  groupList.appendChild(groupDiv);
             });
 
             let lastMsgId = -1;
@@ -81,23 +90,23 @@ window.addEventListener("DOMContentLoaded",async()=>{
             const oldMsgList = document.getElementById('oldMessageList');
             
             for(var i = 0; i < messages.length; i++) {  
-              if(messages[i].groupId === groupId){//group id =>  locally stored messages won't load
+              if(messages[i].groupId === groupId){  //group id =>  locally stored messages won't load
                  const oldMsg = document.createElement('div');
                  oldMsg.classList.add('message-box');
 
                  oldMsg.textContent = messages[i].memberName+' - '+ messages[i].message;
              
                  oldMsgList.appendChild(oldMsg);
-                 lastMsgId = messages[i].id;
+              lastMsgId = messages[i].id;
               } 
-            }
-            //if(lastMsgId > 0){
-            setInterval(()=>{
-                    const groupId = localStorage.getItem('groupid');
-                    getMessages(lastMsgId,groupid);
-                    document.getElementById('messagelist').textContent = ' ';
-            },3000);
-            //}
+            }  
+
+            // setInterval(()=>{
+            //         const groupId = localStorage.getItem('groupid');
+                     getMessages(lastMsgId,groupid);
+            //         document.getElementById('messagelist').textContent = ' ';
+            // },3000);
+         
     }
     catch(error){
             console.log(error)
@@ -125,11 +134,10 @@ if (response.data.message !== 'No messages found') {
   for (var i = 0; i < response.data.message.length; i++) {
     let newMsg = response.data.message[i];
 
-    // Only add unique messages to the local storage
-    if (!messages.some(msg => msg.id === newMsg.id)) {
-      messages.push(newMsg);
-    }
-
+    // // Only add unique messages to the local storage
+    // if (!messages.some(msg => msg.id === newMsg.id)) {
+     messages.push(newMsg);
+    // }
     showMessage(newMsg);
   }
     
@@ -138,12 +146,12 @@ if (response.data.message !== 'No messages found') {
     console.log(error)
     document.getElementById('newUser').textContent = 'Something Went Wrong';        
  }
-};
+};       
   
 const send = async(event) => {
     try{
          event.preventDefault();
-         
+             
          const token = localStorage.getItem('token');
          const decodedToken = await  parseJwt(token); 
          const id = decodedToken.id;
@@ -153,26 +161,67 @@ const send = async(event) => {
          const groupId = localStorage.getItem('groupid');
          console.log(groupId)
 
-         const msgDetails={
-            id,name, message
-         }
-                    
+         const msgDetails={ id,name, message }
+          
+         //console.log(msgDetails)
          const response = await axios.post(`http://localhost:3000/message/post-message/${groupId}`,msgDetails,
          {headers:{'Authorization':token}});
-         console.log(response);
 
-         let messages = JSON.parse(localStorage.getItem('messages')) || [];
-         messages.push(response.data.messageDetails);
-         localStorage.setItem('messages', JSON.stringify(messages));
+         console.log('Before socket',response.data.messageDetails.groupId);
+         const msg = response.data.messageDetails;
+            //store the data in local storage     
+
+         socket.emit('joinRoom',groupId);
+         socket.emit('message', groupId, response.data.messageDetails);
+         socket.emit('receivedMsg',{msg:showMessage(msg)});
+
+         // Share file 
+      //    const fileInput = document.getElementById('file-input');
+      //    fileInput.addEventListener('click', handleFileSelect = async(event) => {
+      //     try{
+      //      const file = event.target.files[0]; 
+      //      let fileName = file.name;
+      //      const fileUrl = URL.createObjectURL(file);
+
+      //      const File = {
+      //          fileName : fileName,
+      //          fileUrl : fileUrl
+      //      }
          
-         showMessage(response.data.messageDetails);
+      //      const fileStored = await axios.post(`http://localhost:3000/file/filestored/${groupId}`,File,
+      //      {headers:{'Authorization':token}});
+      //      console.log('file',fileStored.data.fileName);
+           
+      //      const fileLink = document.createElement('a');
+      //      fileLink.href = fileStored.data.fileName;
+      //      fileLink.textContent = fileStored.data.fileName;
+
+      //      response.data.messageDetails.message = fileLink;  //make url the message 
+      //      console.log('duh',response.data.messageDetails);
+           
+      //      socket.emit('message',groupId,response.data.messageDetails);
+      //      socket.emit('receivedMsg',{msg:showMessage(response.data.messageDetails)});  
+                       
+      //     }
+      //     catch(err){
+      //       document.getElementById('error').innerHTML = `Something went wrong`;
+      //     }
+      //   }
+      // )
+        //showMessage(response.data.messageDetails);
+    
     }
     catch(err){
             document.getElementById('error').innerHTML = `Something went wrong`;
     }
 };
+// socket.on('receivedMsg', () => {
+//   console.log('Received message:', msg);
+//   showMessage(msg);
+// });
 
 function showMessage(data){
+    console.log('Data ',data);
     
     const messageList = document.getElementById('messagelist');
     const message = document.createElement('div'); 
@@ -181,7 +230,8 @@ function showMessage(data){
     message.innerHTML = data.memberName +' - '+ data.message;
     
    messageList.appendChild(message);
+
+   let messages = JSON.parse(localStorage.getItem('messages')) || [];
+   messages.push(data);
+   localStorage.setItem('messages', JSON.stringify(messages));
 };
-
-
-

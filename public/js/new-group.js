@@ -1,3 +1,9 @@
+const socket = io();
+
+socket.on('connect', ()=>{
+    console.log('Server is Printing it to the client side',socket.id)
+})
+
 /********************  decode the token  *****************/
 function parseJwt (token) {
     var base64Url = token.split('.')[1];

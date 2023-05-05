@@ -45,6 +45,12 @@
         width:60%;  
         float: left;
         box-shadow: 20px 20px rgb(49, 83, 33);
+        height: 460px;
+  }
+  .message{
+
+        height: 244px; /* Set a maximum height for the container */
+        overflow-y: scroll; /* Add a scrollbar when the content overflows */
   }
 
     </style>
@@ -56,16 +62,22 @@
          <br> 
          <div class="chat-box" > <br>
          <h2 id="group"></h2><div id="info" ></div>
+         <div id="file-container"></div>
 
           <a id="link" style="padding-left: 21%;"></a>
-        <br> <br>
-            
+        <br><br>
+            <div class="message">
             <div id="oldMessageList" style="padding-left: 10%; padding-right: 10%;"></div>
              <div id="messagelist" style="padding-left: 10%; padding-right: 10%;"> </div>
-            <form class="row" style="padding-top: 35%;" onsubmit="send(event)">
+             </div>
+            <form class="row" style="padding-bottom:4%" onsubmit="send(event)">
               
               <div id="error" style="text-align: center;"></div> <br>
-              <div class="col-md-9" style="padding-left: 10%; padding-bottom: 2%;">
+              <div class="col-md-2" style="padding-left: 5%;">
+
+              <input type="file" id="file-input" style="display:none;">
+              <button onclick="document.getElementById('file-input').click()" class="btn btn-primary">Files</button></div>
+              <div class="col-md-8">
               <input type="text" class="form-control" id="text">
               </div>
               <div class="col-md">
@@ -84,5 +96,6 @@
     </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.2/axios.min.js"></script>
+<script src="socket.io/socket.io.js"></script>
 <script src="./js/group-chat.js"></script>
 </html>

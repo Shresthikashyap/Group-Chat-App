@@ -1,6 +1,5 @@
-const UserGroup = require('../model/UserGroup');
 const Message = require('../model/Chat');
-const sequelize = require('../util/database')
+const sequelize = require('../util/database');
 
 const postGroupMessage = async(req,res) =>{
    // const t = await sequelize.transaction();
@@ -40,7 +39,7 @@ const postGroupMessage = async(req,res) =>{
        res.status(500).json({ error: '!!! Something went wrong' });
      }
    }
-  
+
 module.exports = {
      postGroupMessage, getGroupMessage
 }
