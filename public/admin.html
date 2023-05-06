@@ -35,6 +35,9 @@
         box-shadow: 20px 20px rgb(49, 83, 33);
         height: 460px;
   }
+  #filelist{ 
+        overflow-y: scroll;
+  }
 
     </style>
 </head>
@@ -50,9 +53,12 @@
         <br> <br>
 
         <div class="row" style="padding-left: 16%; padding-right: 16%;">
-          <button class="btn btn-secondary btn-sm"   id="file-container">Docs</button>
+          <button class="btn btn-secondary btn-sm"   id="file-container">Click to see all Shared Files</button>
         </div>
-        <br> <br>
+        <br>      
+        <div id="filelist" style="padding-left: 4%; padding-right: 4%;"></div>
+        <br> 
+        <br>
             
             <div id="memberlist" style="padding-left: 4%; padding-right: 4%;"></div>
             <br>  

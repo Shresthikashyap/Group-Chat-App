@@ -1,9 +1,3 @@
-const socket = io();
-
-socket.on('connect', ()=>{
-    console.log('Server is Printing it to the client side',socket.id)
-})
-
 const urlSearchParams = new URLSearchParams(window.location.search);
 const groupId = urlSearchParams.get('groupId');
 console.log(groupId)

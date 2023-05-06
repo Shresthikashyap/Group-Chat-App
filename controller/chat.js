@@ -6,9 +6,10 @@ const postGroupMessage = async(req,res) =>{
     try{      
      const { groupid } = req.params;
      const { id,name, message} = req.body; 
-     console.log(req.body);
+
+     console.log('message',message);
      console.log('group id',req.params);
- 
+     
      const messageDetails = await Message.create({message:message, memberName:name, userId:id, groupId: groupid});
 
     // await t.commit();
@@ -16,6 +17,7 @@ const postGroupMessage = async(req,res) =>{
     }
     catch(error){
       //await t.rollback();
+      console.log(error);
      res.status(500).json({error:'!!! Something went wrong'});
     }
  }

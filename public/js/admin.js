@@ -81,6 +81,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
                     const members = document.getElementById('memberlist');
 
                       memberList.data.list.forEach((member) => {         /*memberlist the loop */
+
+                      document.getElementById('filelist').textContent = ' ';
                         const user = document.createElement('div');
                           console.log(member.id,adminId)
                          if(adminId === member.id){
@@ -191,15 +193,29 @@ window.addEventListener("DOMContentLoaded",async()=>{
 
           console.log(storedFiles.data);
 
-          const Files = document.createElement('li');
-          storedFiles.data.forEach((file) => {
-            const File = document.createElement('ul');
+          if(storedFiles.data.length > 0){ 
+            document.getElementById('memberlist').textContent = ' ';
 
-            File.href = file.url;
-            File.textContent = file.url;
-            
-            Files.appendChild(File);
-          })
+            // document.getElementById('file-container').textContent = 'Click to see all Group members ';
+            // document.getElementById('file-container').addEventListener('click', async()=>{
+            //     window.location.href = 
+            // })
+
+            const urls = document.getElementById('filelist');
+            urls.style.height ='244px'; 
+
+            for(let i=0; i < storedFiles.data.length; i++){
+              const data = storedFiles.data[i].url;
+
+              const link = document.createElement('a');
+              link.href = data;
+              link.textContent = data.slice(0, 50 - 3) + "...";
+              
+              const urlList = document.createElement('li');
+              urlList.appendChild(link);
+              urls.appendChild(urlList);
+            }
+          }
           
       }
       catch(err){

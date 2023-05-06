@@ -49,7 +49,7 @@ User.hasMany(Group);
 
 Group.hasMany(GroupFiles);
 
-sequelize.sync()
+sequelize.sync({force: true})
 .then(()=>{
     server.listen(3000,()=>{
         console.log('server is listening');
@@ -67,8 +67,10 @@ sequelize.sync()
         socket.on('message', (groupId, msg) => {
 
             console.log('groupId :', groupId);
-            console.log('Received message:', msg);
+            console.log('Received message:', msg.Message);
+
             io.to(groupId).emit('receivedMsg', msg);
+
           });
         
         socket.on('disconnect',()=>{
