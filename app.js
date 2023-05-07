@@ -19,7 +19,9 @@ const fileRoutes = require('./routes/group-files');
 var cors = require('cors');
 const app = express();
 const server = http.createServer(app);   // create a server instance
-const io = socketio(server);    // initialize socket.io
+const io = socketio(server);         // initialize socket.io
+const multer = require('multer');
+const upload = multer();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -34,7 +36,7 @@ app.use('/user',userRoutes);
 app.use('/message',chatRoutes);
 app.use('/group',groupRoutes);
 app.use('/admin',adminRoutes);
-app.use('/file',fileRoutes);
+app.use('/file', upload.single('myfile'),fileRoutes);
 
 User.belongsToMany(Group, { through: UserGroup });
 Group.belongsToMany(User, { through: UserGroup });
@@ -45,11 +47,9 @@ Message.belongsTo(User);
 Group.hasMany(Message);
 Message.belongsTo(Group);
 
-User.hasMany(Group);
-
 Group.hasMany(GroupFiles);
 
-sequelize.sync({force: true})
+sequelize.sync()
 .then(()=>{
     server.listen(3000,()=>{
         console.log('server is listening');
@@ -58,20 +58,17 @@ sequelize.sync({force: true})
     io.on('connection',(socket) => {
         console.log('user connected');
 
-
         socket.on('joinRoom', (groupId) => {
             console.log('joining room:', groupId);
             socket.join(groupId);
         });
-    
-        socket.on('message', (groupId, msg) => {
+        
+        socket.on('message', (msg) => {
 
-            console.log('groupId :', groupId);
-            console.log('Received message:', msg.Message);
-
-            io.to(groupId).emit('receivedMsg', msg);
-
-          });
+            console.log('groupId :', msg.groupId);
+            console.log('Received message:', msg.message);
+            io.to(msg.groupId).emit('receivedMsg', msg);
+        });
         
         socket.on('disconnect',()=>{
             console.log('user disconnected');

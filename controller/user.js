@@ -10,6 +10,7 @@ exports.addUser = async(req, res) => {
   try{
       console.log('req ***********',req.query);
       const { groupId } = req.query;
+      console.log('signing in group id from query', groupId)
       const {name, email, phonenumber, password }= req.body;
 
       if(name === 'undefined' || email === 'undefined' || phonenumber === 'undefined' || password=== 'undefined'){
@@ -27,9 +28,10 @@ exports.addUser = async(req, res) => {
       const newUser = await User.create({name: name, email: email,phone_number: phonenumber ,password: hashedPassword},{transaction: t});
       
       console.log('*******new user',newUser.dataValues.id)
-      let groupDetails;
-      if(groupId !== 'undefined'){
-         await UserGroup.create({userId: newUser.dataValues.id, groupId: groupId},{transaction: t})
+      
+      let groupDetails=null;
+      if(groupId !== undefined){
+         await UserGroup.create({isAdmin:false, userId: newUser.dataValues.id, groupId: groupId},{transaction: t})
          groupDetails = await Group.findByPk(groupId);
          console.log('Group details',groupDetails);
       }
@@ -43,8 +45,7 @@ exports.addUser = async(req, res) => {
       
   }
   catch(err){
-      await t.rollback();
-       
+      await t.rollback();   
           console.log(err);
           res.status(500).json({ error: 'Something went wrong' });     
     }
@@ -68,9 +69,10 @@ exports.getLogin = async(req,res) => {
     //console.log('user id', user)
     if(!user) { return res.status(404).json({error:'User not found'})}
 
-    if(groupId !== 'undefined' ) {
-      console.log(user.dataValues.id, groupId)
-      await UserGroup.create({userId: user.dataValues.id, groupId: groupId})
+    let groupDetails = null;
+    if(groupId !== undefined){
+      console.log(user.dataValues.id, groupId);
+      await UserGroup.create({isAdmin:false, userId: user.dataValues.id, groupId: groupId});
       groupDetails = await Group.findByPk(groupId);
       console.log('Group details',groupDetails);
     }
@@ -81,7 +83,7 @@ exports.getLogin = async(req,res) => {
     }
 
     const payload = user.dataValues;
-    const token = jwt.sign(payload,'mySecretKey')
+    const token = jwt.sign(payload,'mySecretKey');
     
     await t.commit();
     res.status(200).json({name,groupDetails,token:token})

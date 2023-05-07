@@ -42,16 +42,14 @@ const checkAdmin = async(req,res) => {
         const { userId, groupId} = req.params;
         console.log(userId, groupId);   
         
-        const admin = await Group.findOne({where:{id:groupId, userId:userId}});
-        console.log(admin);
+        const admin = await UserGroup.findOne({where:{userId:userId, groupId:groupId}});
+        console.log('check admin',admin);
 
-        const adminId = await Group.findOne({where:{id:groupId}});
+        //const adminId = await Group.findOne({where:{id:groupId}});
 
-        if (admin) {   
-            res.status(200).json({ adminId, message: 'true' });
-        } else {
-            res.status(200).json({ adminId, message: 'false' });
-        }
+
+        res.status(200).json({admin});
+
     }
     catch(err){
         console.log(err);
@@ -74,25 +72,66 @@ const removeMember = async(req,res) => {
     }
 }
 
-const changeAdmin = async(req,res) => {
+const makeAdmin = async(req,res) => {
     try{
         const { userId, groupId } = req.params;
         console.log('change admin',userId,groupId); 
         
-        const user = await User.findByPk(userId);
-        console.log(user.dataValues.name)
-        const userName = user.dataValues.name;
+        //const user = await User.findByPk(userId);
+        //console.log(user.dataValues.name)
+        //const userName = user.dataValues.name;
         
-        const group = await Group.findByPk(groupId);
-        console.log(group.dataValues);
+       const usergroup = await UserGroup.findOne({where:{userId:userId,groupId:groupId}});
+        //console.log(group.dataValues);
 
-        const admin = await group.update({userId:userId, adminName:userName});
+        const admin = await usergroup.update({isAdmin:true});
          
-        res.status(200).json({admin, message: `changed successfully`});
+        res.status(200).json({admin, message: `successful`});
     }
     catch(err){
         console.log(err);
         res.status(500).json({error:`Something went wrong`})
+    }
+}
+
+const removeAdmin = async(req,res) => {
+    try{
+        const { userId, groupId } = req.params;
+        console.log('change admin',userId,groupId); 
+        
+        //const user = await User.findByPk(userId);
+        //console.log(user.dataValues.name)
+        //const userName = user.dataValues.name;
+        
+       const usergroup = await UserGroup.findOne({where:{userId:userId,groupId:groupId}});
+        //console.log(group.dataValues);
+
+        const admin = await usergroup.update({isAdmin:false});
+         
+        res.status(200).json({admin, message: `successful`});
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({error:`Something went wrong`})
+    }
+}
+
+const exitGroup = async(req,res) => {
+    const t = await sequelize.transaction();
+    try{
+        const {userId} = req.params;
+        const {groupId} = req.params;
+        console.log(userId, groupId);
+
+        await UserGroup.destroy({where:{groupId:groupId, userId: userId}},{trensaction:t});
+
+        t.commit();
+        res.status(200).json({message:`You are removed successfully`});
+    }
+    catch(err){
+        console.log(err);
+        t.rollback();
+        res.status(500).json({error:`Something went wrong`}) ;     
     }
 }
 
@@ -116,5 +155,5 @@ const deleteGroup = async(req,res) => {
 }
 
 module.exports = {
-    getMembers, checkAdmin, removeMember, changeAdmin, deleteGroup
+    getMembers, checkAdmin, removeMember, makeAdmin, removeAdmin, exitGroup, deleteGroup
 }

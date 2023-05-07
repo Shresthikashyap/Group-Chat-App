@@ -10,10 +10,10 @@ const createGroup = async(req,res) =>{
     const userid = req.params.id;
     const { adminName, groupName} = req.body; 
 
-    const newGroup= await Group.build({adminName: adminName, groupName: groupName, userId: userid});
+    const newGroup= await Group.build({adminName: adminName, groupName: groupName});
     const newGroupDetails = await newGroup.save();
 
-    await UserGroup.create({userId:req.params.id, groupId:newGroup.dataValues.id})
+    await UserGroup.create({isAdmin:true,userId:req.params.id, groupId:newGroup.dataValues.id})
 
     res.status(200).send({newGroupDetails});
    }
@@ -46,26 +46,25 @@ const getUsersGroupList = async(req,res) => {
         console.log('User id for group list ',req.params)
 
         const groupIdList = await UserGroup.findAll({where:{userId :id}});
-        console.log('groupList',groupIdList);
+        //console.log('groupList',groupIdList);
 
          
         let groupList = [];
         for (let i = 0; i < groupIdList.length; i++) {
             const item = groupIdList[i];
-            console.log('Group ID:', item.dataValues.groupId);
+           // console.log('Group ID:', item.dataValues.groupId);
             let groupId = item.dataValues.groupId;
         
             if(groupId !== null){  
                 const group = await Group.findByPk(groupId); 
-                console.log(group) ;    
+                //console.log(group) ;    
                 groupList.push(group);
-                console.log('group list ***** ',groupList)
+                //console.log('group list ***** ',groupList)
             } 
-            console.log(groupList);
+            //console.log(groupList);
         }
 
-        console.log('groupList',groupList);
-
+        //console.log('groupList',groupList);
         res.status(200).json({list:groupList});
     }
     catch(error){
@@ -73,7 +72,6 @@ const getUsersGroupList = async(req,res) => {
         res.status(500).json({error:'Something went Wrong'});
     }
 }
-
 
 module.exports = {
     createGroup, getUsersGroupList

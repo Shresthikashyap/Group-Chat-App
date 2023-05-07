@@ -30,7 +30,7 @@ const postGroupMessage = async(req,res) =>{
        //  const messages = await Message.findAll({ where: { id: { [Op.gte]: id }} });  
        const messages = await sequelize.query(`SELECT * FROM Messages WHERE id > ${req.params.lastmsgid} AND groupid = ${req.params.groupid}`,{ type: sequelize.QueryTypes.SELECT });  
        
-       console.log('messages',messages);
+      // console.log('messages',messages);
        
        if (messages.length === 0) {
          res.status(200).json({ message: `No messages found` });

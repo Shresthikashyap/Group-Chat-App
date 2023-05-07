@@ -17,6 +17,7 @@ const uploadToS3=(data,filename)=>{
             Body:data,
             ACL:'public-read'
         }
+
         return new Promise((resolve,reject)=>{
 
             s3bucket.upload(params,(err,s3response)=>{

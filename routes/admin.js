@@ -12,8 +12,12 @@ router.get('/checkadmin/:userId/:groupId',userauthentication.authenticate,contro
 
 router.get('/removeuser/:userId/:groupId',userauthentication.authenticate,controller.removeMember);
 
-router.get('/changeadmin/:userId/:groupId',userauthentication.authenticate,controller.changeAdmin);
+router.get('/makeadmin/:userId/:groupId',userauthentication.authenticate,controller.makeAdmin);
 
-router.get('/deletegroup/:groupId',userauthentication.authenticate,controller.deleteGroup)
+router.get('/removeadmin/:userId/:groupId',userauthentication.authenticate,controller.removeAdmin);
+
+router.get('/exitgroup/:userId/:groupId',userauthentication.authenticate,controller.exitGroup);
+
+router.get('/deletegroup/:groupId',userauthentication.authenticate,controller.deleteGroup);
 
 module.exports = router;
