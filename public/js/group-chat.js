@@ -48,7 +48,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
   
               infoBtn.addEventListener('click',()=>{
                 localStorage.setItem('groupid',groupId);
-                //localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`) // group link to share
+                //localStorage.setItem('link',`http://13.127.51.17:3000/signup.html?groupId=${groupId}`) // group link to share
                 window.location.href = `group-details.html?groupId=${groupId}`;
               })
 
@@ -64,7 +64,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
               console.log('**************here')
             
 
-            const checkAdmin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
+            const checkAdmin = await axios.get(`http://13.127.51.17:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
             console.log('yes admin ',checkAdmin.data.admin.isAdmin)
             if(checkAdmin.data.admin.isAdmin === true){ 
             const groupLink = localStorage.getItem("link");
@@ -80,7 +80,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
             }
           }
             // group list for members and admin
-            const groups = await axios.get(`http://localhost:3000/group/group-list/${userId}`,{headers:{Authorization:token}}) 
+            const groups = await axios.get(`http://13.127.51.17:3000/group/group-list/${userId}`,{headers:{Authorization:token}}) 
             console.log('Group list ',groups);
             const groupList = document.getElementById('groupList');
             groups.data.list.forEach((group) => {
@@ -94,9 +94,9 @@ window.addEventListener("DOMContentLoaded",async()=>{
                     groupDiv.addEventListener('click', async() => {
                       localStorage.setItem('groupid', groupId);
                       localStorage.setItem('groupName', groupName);
-                      const admin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
+                      const admin = await axios.get(`http://13.127.51.17:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
                       if(admin.data.message !== 'false') 
-                      { localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupid}`)}
+                      { localStorage.setItem('link',`http://13.127.51.17:3000/signup.html?groupId=${groupid}`)}
                       else{ localStorage.removeItem('link') }
                       window.location.href = `group-chat.html?groupId=${groupId}`;
                     }); 
@@ -137,7 +137,7 @@ const getMessages = async (lastMsgId,groupId) => {
     console.log(lastMsgId)
     const token = localStorage.getItem("token");
 
-    const response = await axios.get(`http://localhost:3000/message/get-message/${lastMsgId}/${groupId}`,
+    const response = await axios.get(`http://13.127.51.17:3000/message/get-message/${lastMsgId}/${groupId}`,
     { headers: { Authorization: token }});
     
     console.log(response.data.message);
@@ -173,7 +173,7 @@ const send = async(event) => {
          const msgDetails={ id,name, message }
           
          //console.log(msgDetails)
-         const response = await axios.post(`http://localhost:3000/message/post-message/${groupId}`,msgDetails,
+         const response = await axios.post(`http://13.127.51.17:3000/message/post-message/${groupId}`,msgDetails,
          {headers:{'Authorization':token}});
 
          console.log('Before socket',response.data.messageDetails.groupId);
@@ -224,7 +224,7 @@ fileInput.addEventListener('input', handleFileSelect = async(event) => {
       const groupId = localStorage.getItem('groupid');
       console.log('groupId',groupId)
 
-           const fileStored = await axios.post(`http://localhost:3000/file/filestored/${groupId}`,formData,
+           const fileStored = await axios.post(`http://13.127.51.17:3000/file/filestored/${groupId}`,formData,
            {headers:{'Authorization':token,'Content-Type': 'multipart/form-data'}});
 
            console.log('duh',fileStored.data.msg.message);  
