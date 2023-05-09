@@ -49,7 +49,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
               infoBtn.addEventListener('click',()=>{
                 localStorage.setItem('groupid',groupId);
                 //localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`) // group link to share
-                window.location.href = `admin.html?groupId=${groupId}`;
+                window.location.href = `group-details.html?groupId=${groupId}`;
               })
 
               group.appendChild(infoBtn);

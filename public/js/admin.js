@@ -183,7 +183,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
         
             console.log(removedUser);
              alert(' Removed Successfully');
-             window.location.href = `admin.html?groupId=${groupId}`;
+             window.location.href = `group-details.html?groupId=${groupId}`;
         }
         catch(error){
             document.getElementById('failure').textContent = 'Something went wrong';
@@ -200,7 +200,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
           console.log(adminDetails.data);
           alert(`You made a new admin for this Group`);
           //localStorage.removeItem('link');
-          window.location.href = `admin.html?groupId=${_groupId}`;
+          window.location.href = `group-details.html?groupId=${_groupId}`;
         }
         catch(error){
             document.getElementById('failure').textContent = 'Something went wrong';
@@ -217,7 +217,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
         console.log(adminDetails.data);
         alert(`You are no longer admin for this Group`);
         //localStorage.removeItem('link');
-        window.location.href = `admin.html?groupId=${_groupId}`;
+        window.location.href = `group-details.html?groupId=${_groupId}`;
       }
       catch(error){
           document.getElementById('failure').textContent = 'Something went wrong';
@@ -294,8 +294,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
             }
           }else{
               alert('no shared files')
-            }
-          
+          }
       }
       catch(err){
         console.log(err);

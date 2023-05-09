@@ -49,7 +49,7 @@ Message.belongsTo(Group);
 
 Group.hasMany(GroupFiles);
 
-sequelize.sync()
+sequelize.sync({force:true})
 .then(()=>{
     server.listen(3000,()=>{
         console.log('server is listening');
