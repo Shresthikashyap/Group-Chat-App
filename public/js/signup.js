@@ -24,10 +24,10 @@ const save = async(event)=>{
         let response;
         
         if(groupId){
-            response = await axios.post(`http://13.127.51.17:3000/user/signup?groupId=${groupId}`,obj);
+            response = await axios.post(`http://13.233.194.137:3000/user/signup?groupId=${groupId}`,obj);
         }
         else{
-            response = await axios.post("http://13.127.51.17:3000/user/signup",obj);
+            response = await axios.post("http://13.233.194.137:3000/user/signup",obj);
         }
         
        console.log(response); 
