@@ -48,8 +48,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
   
               infoBtn.addEventListener('click',()=>{
                 localStorage.setItem('groupid',groupId);
-                //localStorage.setItem('link',`http://13.233.194.137:3000/signup.html?groupId=${groupId}`) // group link to share
-                window.location.href = `group-details.html?groupId=${groupId}`;
+                //localStorage.setItem('link',`http://13.126.199.100:3000/signup.html?groupId=${groupId}`) // group link to share
+                window.location.href = `admin.html?groupId=${groupId}`;
               })
 
               group.appendChild(infoBtn);
@@ -64,7 +64,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
               console.log('**************here')
             
 
-            const checkAdmin = await axios.get(`http://13.233.194.137:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
+            const checkAdmin = await axios.get(`http://13.126.199.100:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
             console.log('yes admin ',checkAdmin.data.admin.isAdmin)
             if(checkAdmin.data.admin.isAdmin === true){ 
             const groupLink = localStorage.getItem("link");
@@ -80,7 +80,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
             }
           }
             // group list for members and admin
-            const groups = await axios.get(`http://13.233.194.137:3000/group/group-list/${userId}`,{headers:{Authorization:token}}) 
+            const groups = await axios.get(`http://13.126.199.100:3000/group/group-list/${userId}`,{headers:{Authorization:token}}) 
             console.log('Group list ',groups);
             const groupList = document.getElementById('groupList');
             groups.data.list.forEach((group) => {
@@ -94,11 +94,13 @@ window.addEventListener("DOMContentLoaded",async()=>{
                     groupDiv.addEventListener('click', async() => {
                       localStorage.setItem('groupid', groupId);
                       localStorage.setItem('groupName', groupName);
-                      const admin = await axios.get(`http://13.233.194.137:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
-                      if(admin.data.message !== 'false') 
-                      { localStorage.setItem('link',`http://13.233.194.137:3000/signup.html?groupId=${groupid}`)}
+                      console.log('*********',userId,groupId)
+                      const admin = await axios.get(`http://13.126.199.100:3000/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
+                      console.log(admin,'*******' );
+                      if(admin.data.admin.isAdmin === true) 
+                      { localStorage.setItem('link',`http://13.126.199.100:3000/signup.html?groupId=${groupId}`)}
                       else{ localStorage.removeItem('link') }
-                      window.location.href = `group-chat.html?groupId=${groupId}`;
+                    window.location.href = `group-chat.html?groupId=${groupId}`;
                     }); 
                   groupList.appendChild(groupDiv);
             });
@@ -137,7 +139,7 @@ const getMessages = async (lastMsgId,groupId) => {
     console.log(lastMsgId)
     const token = localStorage.getItem("token");
 
-    const response = await axios.get(`http://13.233.194.137:3000/message/get-message/${lastMsgId}/${groupId}`,
+    const response = await axios.get(`http://13.126.199.100:3000/message/get-message/${lastMsgId}/${groupId}`,
     { headers: { Authorization: token }});
     
     console.log(response.data.message);
@@ -173,16 +175,13 @@ const send = async(event) => {
          const msgDetails={ id,name, message }
           
          //console.log(msgDetails)
-         const response = await axios.post(`http://13.233.194.137:3000/message/post-message/${groupId}`,msgDetails,
+         const response = await axios.post(`http://13.126.199.100:3000/message/post-message/${groupId}`,msgDetails,
          {headers:{'Authorization':token}});
 
          console.log('Before socket',response.data.messageDetails.groupId);
-         //const msg = response.data.messageDetails;
+         
             //store the data in local storage     
-         console.log('**********',groupId)
-        
          socket.emit('message', response.data.messageDetails);
-         //socket.emit('joinRoom',groupId);
     }
     catch(err){
             document.getElementById('error').innerHTML = `Something went wrong`;
@@ -208,37 +207,34 @@ function showMessage(data){
 
 
 const fileInput = document.getElementById('myfile');
-fileInput.addEventListener('input', handleFileSelect = async(event) => {
+fileInput.addEventListener('input', handleSelectedFile = async(event) => {
   try{
       const file = event.target.files[0]; 
       console.log('files**********',file);
       
       const formData = new FormData()
       formData.append('myfile',file);
+
       console.log('formData',formData.get('myfile'))
-
-      //const File = formData.get('myfile');
-
-      const token = localStorage.getItem('token');
 
       const groupId = localStorage.getItem('groupid');
       console.log('groupId',groupId)
 
-           const fileStored = await axios.post(`http://13.233.194.137:3000/file/filestored/${groupId}`,formData,
+      const token = localStorage.getItem('token');
+      const fileStored = await axios.post(`http://13.126.199.100:3000/file/filestored/${groupId}`,formData,
            {headers:{'Authorization':token,'Content-Type': 'multipart/form-data'}});
 
-           console.log('duh',fileStored.data.msg.message);  
-           document.getElementById('text').value = fileStored.data.msg.message;  
+      console.log('duh',fileStored.data.msg.message); 
 
-          // socket.emit('joinRoom',groupId);
-           socket.emit('message',fileStored.data.msg.message);
-               
-          }
-          catch(err){
+      document.getElementById('text').value = fileStored.data.msg.message;  
+
+      socket.emit('message',fileStored.data.msg.message);             
+    }
+  catch(err){
             document.getElementById('error').innerHTML = `Something went wrong`;
-          }
-        }
-      )  
+    }
+  }
+)  
 
       const signOut = () =>{
         localStorage.removeItem('groupid');

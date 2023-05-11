@@ -46,8 +46,7 @@ const checkAdmin = async(req,res) => {
         console.log('check admin',admin);
 
         //const adminId = await Group.findOne({where:{id:groupId}});
-
-
+        
         res.status(200).json({admin});
 
     }

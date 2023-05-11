@@ -1,8 +1,8 @@
 const UserGroup = require('../model/UserGroup');
 const Group = require('../model/Group');
 const User = require('../model/User');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt');console.log('***** bcrypt ');
+const jwt = require('jsonwebtoken'); console.log('******** database');
 const sequelize = require('../util/database');
 
 exports.addUser = async(req, res) => {

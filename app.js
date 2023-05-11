@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(cors({
-    origin:"http://13.233.194.137:3000",
+    origin:"http://13.126.199.100:3000",
 })); 
 
 app.use(express.static('public'));
@@ -49,7 +49,7 @@ Message.belongsTo(Group);
 
 Group.hasMany(GroupFiles);
 
-sequelize.sync({force:true})
+sequelize.sync()
 .then(()=>{
     server.listen(3000,()=>{
         console.log('server is listening');

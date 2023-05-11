@@ -25,7 +25,7 @@ const newGroup = async(event) =>{
         const decodedToken = await parseJwt(token);
         const userId = decodedToken.id
 
-        const response = await axios.post(`http://13.233.194.137:3000/group/new-group/${userId}`,newGroupDetails,{
+        const response = await axios.post(`http://13.126.199.100:3000/group/new-group/${userId}`,newGroupDetails,{
             headers:{'Authorization':token}
         });
 
@@ -33,7 +33,7 @@ const newGroup = async(event) =>{
         localStorage.setItem('groupid',response.data.newGroupDetails.id);
         localStorage.setItem('groupName',response.data.newGroupDetails.groupName);
         const groupId = response.data.newGroupDetails.id;
-        localStorage.setItem('link',`http://13.233.194.137:3000/signup.html?groupId=${groupId}`) // group link to share 
+        localStorage.setItem('link',`http://13.126.199.100:3000/signup.html?groupId=${groupId}`) // group link to share 
         window.location.href = `group-chat.html?groupId=${groupId}`;
     }
     catch(error){
