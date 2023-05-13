@@ -10,7 +10,7 @@ const createGroup = async(req,res) =>{
     const userid = req.params.id;
     const { adminName, groupName} = req.body; 
 
-    const newGroup= await Group.build({adminName: adminName, groupName: groupName});
+    const newGroup= await Group.build({adminName: adminName, groupName: groupName, userId: userid});
     const newGroupDetails = await newGroup.save();
 
     await UserGroup.create({isAdmin:true,userId:req.params.id, groupId:newGroup.dataValues.id})

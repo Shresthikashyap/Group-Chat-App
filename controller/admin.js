@@ -1,7 +1,6 @@
 const UserGroup = require('../model/UserGroup');
 const User = require('../model/User');
 const Group = require('../model/Group');
-const jwt = require('jsonwebtoken');
 const sequelize = require('../util/database');
 
 const getMembers = async(req,res) =>  {
@@ -27,9 +26,7 @@ const getMembers = async(req,res) =>  {
             } 
            // console.log(memberList);
         }
-
        // console.log('groupList',memberList);
-
         res.status(200).json({list:memberList});
     }
     catch(err){
@@ -37,9 +34,10 @@ const getMembers = async(req,res) =>  {
     }
 }
 
+
 const checkAdmin = async(req,res) => {
     try{
-        const { userId, groupId} = req.params;
+        const {userId, groupId} = req.params;
         console.log(userId, groupId);   
         
         const admin = await UserGroup.findOne({where:{userId:userId, groupId:groupId}});
@@ -102,7 +100,7 @@ const removeAdmin = async(req,res) => {
         //console.log(user.dataValues.name)
         //const userName = user.dataValues.name;
         
-       const usergroup = await UserGroup.findOne({where:{userId:userId,groupId:groupId}});
+        const usergroup = await UserGroup.findOne({where:{userId:userId,groupId:groupId}});
         //console.log(group.dataValues);
 
         const admin = await usergroup.update({isAdmin:false});

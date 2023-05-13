@@ -5,7 +5,7 @@ const S3Service = require('../services/S3services');
 const downloadFiles = async(req,res) => {
     try{
       console.log('file********',req.file)
-      const file = req.file.buffer
+      const file = req.file.buffer;
       console.log(req.user.dataValues.name)
       const id = req.user.dataValues.id;
       const name = req.user.dataValues.name;
@@ -21,7 +21,7 @@ const downloadFiles = async(req,res) => {
       await GroupFiles.create({url:fileUrl, groupId: groupId});
       const msg = await Message.create({message:fileUrl, memberName:name, userId:id, groupId:groupId});
   
-      res.status(200).json({msg, success: true});
+      res.status(200).json({msg, fileName, success: true});
     }
     catch(err){
       console.log(err);

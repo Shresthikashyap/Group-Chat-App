@@ -1,25 +1,25 @@
 const UserGroup = require('../model/UserGroup');
 const Group = require('../model/Group');
 const User = require('../model/User');
-const bcrypt = require('bcrypt');console.log('***** bcrypt ');
-const jwt = require('jsonwebtoken'); console.log('******** database');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken'); 
 const sequelize = require('../util/database');
 
 exports.addUser = async(req, res) => {
   const t = await sequelize.transaction();
   try{
-      console.log('req ***********',req.query);
       const { groupId } = req.query;
       console.log('signing in group id from query', groupId)
+
       const {name, email, phonenumber, password }= req.body;
 
       if(name === 'undefined' || email === 'undefined' || phonenumber === 'undefined' || password=== 'undefined'){
-        res.status(500).json({error:"Something went wrong"})
+        res.status(500).json({error:"Something went wrong"});
       }
       const user = await User.findOne({ where: { email } },{transaction: t});
 
       if (user) {
-        return res.status(404).json({ error: 'User already exists' });
+        return res.status(400).json({ error: 'User already exists' });
       } 
 
      console.log(req.body)
@@ -71,6 +71,7 @@ exports.getLogin = async(req,res) => {
 
     let groupDetails = null;
     if(groupId !== undefined){
+      
       console.log(user.dataValues.id, groupId);
       await UserGroup.create({isAdmin:false, userId: user.dataValues.id, groupId: groupId});
       groupDetails = await Group.findByPk(groupId);
