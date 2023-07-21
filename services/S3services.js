@@ -2,9 +2,9 @@ const AWS=require('aws-sdk');
 
 const uploadToS3=(data,filename)=>{
 
-    const BUCKET_NAME = 'filelinksbucket';  // process.env.BUCKET_NAME;
-    const IAM_USER_KEY = 'AKIAR7JW2EXIAPR7XNVF';   // process.env.IAM_USER_KEY;
-    const IAM_USER_SECRET = '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'; //process.env.IAM_USER_SECRET;
+    const BUCKET_NAME = 'mybucketofaws';  // process.env.BUCKET_NAME;
+    const IAM_USER_KEY = 'AKIAXVOJP5WDBNRDLSNS';   // process.env.IAM_USER_KEY;
+    const IAM_USER_SECRET = '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'; //process.env.IAM_USER_SECRET;
 
     let s3bucket = new AWS.S3({
         accessKeyId:IAM_USER_KEY,

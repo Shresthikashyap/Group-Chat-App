@@ -54,7 +54,7 @@ Group.hasMany(GroupFiles);
 User.hasMany(ArchievedMessage);
 Group.hasMany(ArchievedMessage);
 
-sequelize.sync({force: true})
+sequelize.sync()
 .then(()=>{
     server.listen(3000,()=>{
         console.log('server is listening');

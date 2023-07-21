@@ -65,7 +65,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
             
 
             const checkAdmin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
-            console.log('yes admin ',checkAdmin.data.admin.isAdmin)
+            //console.log('yes admin ',checkAdmin.data.admin.isAdmin)
             if(checkAdmin.data.admin.isAdmin === true){ 
             const groupLink = localStorage.getItem("link");
             console.log(groupLink)
@@ -105,13 +105,14 @@ window.addEventListener("DOMContentLoaded",async()=>{
                   groupList.appendChild(groupDiv);
             });
 
-            let lastMsgId = -1;
-            const messages = JSON.parse(localStorage.getItem('messages')) || [];
+            // load messages from local storage
+            let lastMsgId = 0;
+            const messages = JSON.parse(localStorage.getItem('messages')) || []; 
             const groupId = localStorage.getItem('groupid');
             const oldMsgList = document.getElementById('oldMessageList');
             
-            for(var i = 0; i < messages.length; i++) {  
-              if(messages[i].groupId === groupId){  //group id =>  locally stored messages won't load
+            for(var i = 0; i < messages.length; i++) { 
+              if(messages[i].groupId == groupId){  //msg that has current group id
                  const oldMsg = document.createElement('div');
                  oldMsg.classList.add('message-box');
 
@@ -119,11 +120,13 @@ window.addEventListener("DOMContentLoaded",async()=>{
              
                  oldMsgList.appendChild(oldMsg);
                  lastMsgId = messages[i].id;
+                 
               } 
-            }  
+            }  console.log('last message id ',lastMsgId);
             // setInterval(()=>{
             //         const groupId = localStorage.getItem('groupid');
-                     getMessages(lastMsgId,groupid);
+            if(lastMsgId>0){ getMessages(lastMsgId,groupid); }
+                     
             //         document.getElementById('messagelist').textContent = ' ';
             // },3000);
     }
@@ -142,14 +145,13 @@ const getMessages = async (lastMsgId,groupId) => {
     const response = await axios.get(`http://localhost:3000/message/get-message/${lastMsgId}/${groupId}`,
     { headers: { Authorization: token }});
     
-    console.log(response.data.message);
+    //console.log('get messages',response.data.message);
     
-    if (response.data.message !== 'No messages found') {
-      let messages = JSON.parse(localStorage.getItem('messages')) || [];
-      
+    if (response.data.message !== 'No messages found') {      
       for (var i = 0; i < response.data.message.length; i++) {
         let newMsg = response.data.message[i];
-        messages.push(newMsg);
+        console.log('new msg ',newMsg);
+        //messages.push(newMsg);
         showMessage(newMsg);
       }
     }
@@ -198,11 +200,16 @@ function showMessage(data){
    
     message.innerHTML = data.memberName +' - '+ data.message;
     
-   messageList.appendChild(message);
+    messageList.appendChild(message);
 
-   let messages = JSON.parse(localStorage.getItem('messages')) || [];
-   messages.push(data);
-   localStorage.setItem('messages', JSON.stringify(messages));
+    let messages = JSON.parse(localStorage.getItem('messages')) || [];
+    // Check if the message already exists in local storage
+    const existingMessage = messages.find((m) => m.id === data.id);
+
+    if (!existingMessage) {
+      messages.push(data);
+      localStorage.setItem('messages', JSON.stringify(messages));
+    }
 };
 
 
