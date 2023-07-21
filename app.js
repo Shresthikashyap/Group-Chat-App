@@ -25,6 +25,7 @@ const io = socketio(server);         // initialize socket.io
 const multer = require('multer');
 const upload = multer();
 
+require('dotenv').config({ path: './.env' });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
