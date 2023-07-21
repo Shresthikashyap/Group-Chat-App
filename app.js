@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 // app.use(cors({
-//     origin:"http://localhost:3000",
+//     origin:"http://16.170.219.218",
 // })); 
 
 app.use(express.static('public'));

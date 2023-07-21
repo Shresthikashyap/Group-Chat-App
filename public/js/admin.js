@@ -24,7 +24,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
             const userId = decodedToken.id;
 
             // if user is admin show the link
-            const checkAdmin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
+            const checkAdmin = await axios.get(`http://16.170.219.218/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
             console.log('haan hun mei admin ',checkAdmin.data.admin.isAdmin)
             if(checkAdmin.data.admin.isAdmin === true){ 
             const groupLink = localStorage.getItem("link");
@@ -41,7 +41,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
                
 
             console.log('user id',decodedToken.id)
-            const groups = await axios.get(`http://localhost:3000/group/group-list/${userId}`,{headers:{Authorization:token}}) 
+            const groups = await axios.get(`http://16.170.219.218/group/group-list/${userId}`,{headers:{Authorization:token}}) 
             console.log('Group list ',groups);
             const groupList = document.getElementById('groupList');
             groups.data.list.forEach((group) => {
@@ -55,10 +55,10 @@ window.addEventListener("DOMContentLoaded",async()=>{
                     groupDiv.addEventListener('click', async() => {
                       localStorage.setItem('groupid', groupid);
                       localStorage.setItem('groupName', groupName);
-                      const admin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
+                      const admin = await axios.get(`http://16.170.219.218/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
                       if(admin.data.admin.isAdmin === true) 
                         { 
-                          localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupid}`); 
+                          localStorage.setItem('link',`http://16.170.219.218/signup.html?groupId=${groupid}`); 
                         }
                       else
                         { localStorage.removeItem('link');  }
@@ -97,7 +97,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
                  group.append(deleteGroup);              
                 }
    
-                    const memberList = await axios.get(`http://localhost:3000/admin/memberlist/${groupId}`,{
+                    const memberList = await axios.get(`http://16.170.219.218/admin/memberlist/${groupId}`,{
                         headers:{Authorization:token}
                     })
                     console.log('memberlist',memberList);  //check the data
@@ -112,7 +112,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
                         const user = document.createElement('div'); console.log(member.id)
                          
                         //checking admin by passing the member id
-                        const admin = await axios.get(`http://localhost:3000/admin/checkadmin/${member.id}/${groupId}`,{headers:{Authorization:token}})
+                        const admin = await axios.get(`http://16.170.219.218/admin/checkadmin/${member.id}/${groupId}`,{headers:{Authorization:token}})
                         console.log(admin.data.admin.isAdmin)
                          if(admin.data.admin.isAdmin === true ){
                           user.textContent = `Admin : ${member.name} - ${member.email} - ${member.phone_number}  `;
@@ -179,7 +179,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
         try{
             console.log(userId,groupId)
             const token = localStorage.getItem('token'); 
-            const removedUser = await axios.get(`http://localhost:3000/admin/removeuser/${userId}/${groupId}`,
+            const removedUser = await axios.get(`http://16.170.219.218/admin/removeuser/${userId}/${groupId}`,
             {headers:{Authorization:token}});
         
             console.log(removedUser);
@@ -195,7 +195,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
         try{
           console.log(memberId,_groupId)
           const token = localStorage.getItem('token')
-          const adminDetails = await axios.get(`http://localhost:3000/admin/makeadmin/${memberId}/${_groupId}`,
+          const adminDetails = await axios.get(`http://16.170.219.218/admin/makeadmin/${memberId}/${_groupId}`,
           {headers:{Authorization:token}});
 
           console.log(adminDetails.data);
@@ -212,7 +212,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
       try{
         console.log(memberId,_groupId)
         const token = localStorage.getItem('token')
-        const adminDetails = await axios.get(`http://localhost:3000/admin/removeadmin/${memberId}/${_groupId}`,
+        const adminDetails = await axios.get(`http://16.170.219.218/admin/removeadmin/${memberId}/${_groupId}`,
         {headers:{Authorization:token}});
 
         console.log(adminDetails.data);
@@ -228,7 +228,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
   const exitGroup = async(userId,groupId) =>{
     try{
       const token = localStorage.getItem('token');
-      const group = await axios.get(`http://localhost:3000/admin/exitgroup/${userId}/${groupId}`,{
+      const group = await axios.get(`http://16.170.219.218/admin/exitgroup/${userId}/${groupId}`,{
         headers:{Authorization:token}});
 
         console.log(group.data.message);
@@ -247,7 +247,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
       try{
           console.log(groupId);
           const token = localStorage.getItem('token'); 
-          const group = await axios.get(`http://localhost:3000/admin/deletegroup/${groupId}`,{
+          const group = await axios.get(`http://16.170.219.218/admin/deletegroup/${groupId}`,{
             headers:{Authorization:token}});
 
           console.log(group.data.message);
@@ -266,7 +266,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
   const getStoredFiles = async(groupId) => {
       try{
           const token = localStorage.getItem('token'); 
-          const storedFiles = await axios.get(`http://localhost:3000/file/getfiles/${groupId}`,
+          const storedFiles = await axios.get(`http://16.170.219.218/file/getfiles/${groupId}`,
           {headers:{Authorization:token}});
 
           console.log(storedFiles.data);

@@ -16,10 +16,10 @@ const save = async(event) =>{
         let response;
 
         if(groupId){
-            response = await axios.post(`http://localhost:3000/user/login?groupId=${groupId}`,loginDetails);
+            response = await axios.post(`http://16.170.219.218/user/login?groupId=${groupId}`,loginDetails);
         }
         else{
-            response = await axios.post("http://localhost:3000/user/login",loginDetails);
+            response = await axios.post("http://16.170.219.218/user/login",loginDetails);
         }
         
         console.log('response',response)
