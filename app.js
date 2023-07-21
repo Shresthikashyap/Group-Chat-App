@@ -18,7 +18,7 @@ const groupRoutes = require('./routes/group');
 const adminRoutes = require('./routes/admin');
 const fileRoutes = require('./routes/group-files');
 
-//var cors = require('cors');
+//var cors = require('cors'); 
 const app = express();
 const server = http.createServer(app);   // create a server instance
 const io = socketio(server);         // initialize socket.io
