@@ -19,12 +19,11 @@ const adminRoutes = require('./routes/admin');
 const fileRoutes = require('./routes/group-files');
 
 //var cors = require('cors');
-const app = express(); // app an instance of express js application 
-const server = http.createServer(app);   // create a server instance 
-const io = socketio(server);         // initialize socket.io (by doing the line we're telling socket.io to use the same port as your Express.js application)
-const multer = require('multer'); //an npm package used to handle file uploads / here we handle multipart/form-data
-// multipart/form data => (used when you want to upload binary data in the form of files like image, word file etc)
-const upload = multer(); 
+const app = express();
+const server = http.createServer(app);   // create a server instance
+const io = socketio(server);         // initialize socket.io
+const multer = require('multer');
+const upload = multer();
 
 require('dotenv').config({ path: './.env' });
 app.use(bodyParser.json());   // bodyParser.json is used to parse incoming HTTP request bodies that are in JSON format
