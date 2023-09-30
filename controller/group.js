@@ -1,6 +1,6 @@
 const UserGroup = require('../model/UserGroup');
 const Group = require('../model/Group')
-const sequelize = require('../util/database');
+const User = require('../model/User');
 
 const createGroup = async(req,res) =>{
 
@@ -23,22 +23,34 @@ const createGroup = async(req,res) =>{
    }
 }
 
-// const getGroupList = async(req,res) => {
-//     try{
-//         //const {id} = req.params;
-//         //console.log('User id for group list ',req.params)
+const getMembers = async(req,res) =>  {
+    try{
+        console.log(req.body)
+        const {groupId} = req.params;
+        console.log('admin groupId ', groupId);
 
-//         const groupList = await Group.findAll();
-
-//        // if(!groupList)
-
-//         res.status(200).json({list:groupList});
-//     }
-//     catch(error){
-//         console.log(error);
-//         res.status(500).json({error:'Something went Wrong'});
-//     }
-// }
+        const userIdList = await UserGroup.findAll({where:{groupId: groupId}});
+     
+        let memberList = [];
+        for (let i = 0; i < userIdList.length; i++) {
+            const item = userIdList[i];
+            console.log('User ID:', item.dataValues.userId);
+            let userId = item.dataValues.userId;
+        
+            if(userId !== null){  
+                const user = await User.findByPk(userId); 
+                //console.log(user);    
+                memberList.push(user);
+                //console.log('member list ***** ',memberList)
+            } 
+        }
+       // console.log('groupList',memberList);
+        res.status(200).json({list:memberList});
+    }
+    catch(err){
+        res.status(500).json({error:'Something went wrong'})
+    }
+}
 
 const getUsersGroupList = async(req,res) => {
     try{
@@ -47,12 +59,11 @@ const getUsersGroupList = async(req,res) => {
 
         const groupIdList = await UserGroup.findAll({where:{userId :id}});
         //console.log('groupList',groupIdList);
-
-         
+    
         let groupList = [];
         for (let i = 0; i < groupIdList.length; i++) {
             const item = groupIdList[i];
-           // console.log('Group ID:', item.dataValues.groupId);
+           
             let groupId = item.dataValues.groupId;
         
             if(groupId !== null){  
@@ -61,10 +72,9 @@ const getUsersGroupList = async(req,res) => {
                 groupList.push(group);
                 //console.log('group list ***** ',groupList)
             } 
-            //console.log(groupList);
         }
 
-        //console.log('groupList',groupList);
+        console.log('groupList',groupList);
         res.status(200).json({list:groupList});
     }
     catch(error){
@@ -73,6 +83,24 @@ const getUsersGroupList = async(req,res) => {
     }
 }
 
+
+const exitGroup = async(req,res) => {
+ 
+    try{
+        const {userId} = req.params;
+        const {groupId} = req.params;
+        console.log(userId, groupId);
+
+        await UserGroup.destroy({where:{groupId:groupId, userId: userId}});
+
+        res.status(200).json({message:`You are removed successfully`});
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({error:`Something went wrong`}) ;     
+    }
+}
+
 module.exports = {
-    createGroup, getUsersGroupList
+    createGroup, getUsersGroupList, getMembers, exitGroup
 }

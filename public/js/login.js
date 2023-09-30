@@ -16,10 +16,9 @@ const save = async(event) =>{
         let response;
 
         if(groupId){
-            response = await axios.post(`http://16.170.219.218/user/login?groupId=${groupId}`,loginDetails);
-        }
-        else{
-            response = await axios.post("http://16.170.219.218/user/login",loginDetails);
+            response = await axios.post(`http://13.51.156.137/user/login?groupId=${groupId}`,loginDetails);
+        }else{
+            response = await axios.post("http://13.51.156.137/user/login",loginDetails);
         }
         
         console.log('response',response)
@@ -39,7 +38,7 @@ const save = async(event) =>{
             window.location.href = `group-chat.html?groupId=${groupId}`;
         }
         else{
-            window.location.href = `group-chat.html`;
+            window.location.href = `group-list.html`;
         }
     }
     catch(err){

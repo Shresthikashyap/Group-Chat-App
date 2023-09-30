@@ -8,96 +8,47 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
     <title>Group Chat App</title>
-
-    <style>
-    h1,h2,h3{
-      text-align: center;
-      font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-      
-      font-weight: 1000;
-      color: rgb(9, 99, 9);
-      text-shadow:5px 5px 10px rgb(88, 121, 88);
-    }
-    body{
-      background-color: rgb(106, 196, 106);        }
-
-    .text-dark {
-        color: green; font-weight: 700; font-size: 150%;
-    }
-
-    .message-box{
-        padding: 10px;
-        background-color: #ecececf1;
-        border: 2px solid #2b6b00;
-        border-radius: 5px;
-        margin: 5px;
-    }
-
-  .right-column {
-    width: 25%;
-    float: right;
-  }
-
-  .chat-box{
-        background-color: rgb(226, 185, 131);
-        border: 5px solid #2b6b00;
-        border-radius: 5px;
-        width:60%;  
-        float: left;
-        box-shadow: 20px 20px rgb(49, 83, 33);
-        height: 490px;
-  }
-  .message{
-
-        height: 270px; /* Set a maximum height for the container */
-        overflow-y: scroll; /* Add a scrollbar when the content overflows */
-  }
-  #myfile{
-     padding-top: 6%;
-     
-  }
-
-    </style>
-</head>
+    <link rel="stylesheet" href="css/group-chat.css">
 <body>
-    <h1 style="padding-top: 2%;" >Group Chat App</h1><br>
+    <!-- <h1 style="padding-top: 2%;" >Group Chat App</h1><br> -->
+    <div class="btn btn-dark" onclick="checkGroupList()" style="position: fixed;  top: 15px; left: 15px;">Group List</div> 
+    <div class="btn btn-dark" onclick="signOut()" style="position: fixed; top: 15px; right: 15px;"> Sign Out</div> 
+    <br>
     <div class="container">
-         <br> <div id="newUser" style="text-align: center; color: green; font-weight: 700; font-size: 120%;"></div>
+        <!-- <br> <div id="newUser" style="text-align: center; color: green; font-weight: 700; font-size: 120%;"></div> -->
          <br> 
-         <div class="chat-box" > <br>
-         <h2 id="group"></h2><div id="info" ></div>
+         <div class="chat-box" > <br>    
+         <h1 id="group"></h1> 
+         <div id="info" ></div>     
+
+
          <div id="file-container"></div>
 
-          <a id="link" style="padding-left: 25%;"></a>
+          <a id="link" style="padding-left: 35%;"></a>
         <br><br>
           <div class="message">
-            <div id="oldMessageList" style="padding-left: 10%; padding-right: 10%;"></div>
-             <div id="messagelist" style="padding-left: 10%; padding-right: 10%;"> </div>
+            <div id="oldMessageList" style="padding-left: 15%; padding-right: 15%;"></div>
+             <div id="messagelist" style="padding-left: 15%; padding-right: 15%;"> </div>
              </div>
-            <form class="row" style="padding-bottom:4%" onsubmit="send(event)">
+
+            <form class="row"  onsubmit="send(event)" style="padding-left: 27%;">
               
               <div id="error" style="text-align: center; color: green; font-weight: 700; font-size: 120%;"></div> <br>
-              <div class="col-md-2" style="padding-left: 5%; ">
-
-              <input type="file" id="myfile">
-              <button class="btn btn-primary btn-sm" style="display:none" >Upload</button></div>
-              <div class="col-md-8" style="padding-left: 1%; ">
-              <input type="text" class="form-control" id="text">
+              
+              <div> 
+                <input type="file" id="myfile">
+                <button class="btn btn-primary btn-sm" style="display:none" ></button>
+              </div>
+              
+              <div class="col-md">
+                <input type="text" class="form-control" id="text">
               </div>
               <div class="col-md">
-              <button class="btn btn-success" >Send</button>          
+                <button class="btn btn-success" >Send</button>          
               </div>   
             </form>
         </div>
         
-            <div class="right-column">
-                <h3> Group List</h3>
-                     <br>
-                       <a href="new-group.html"  style="padding-left: 27%; ">Create a new Group</a><br> <br>
-                       <div id="groupList"></div>
-                       
-            </div>
-            <button class="btn btn-danger" onclick="signOut()" style="position: fixed; bottom: 15px; right: 15px;">Sign Out</button>       
     </div>
 
 </body>

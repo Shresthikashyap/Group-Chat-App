@@ -2,9 +2,9 @@ const AWS=require('aws-sdk');
 
 const uploadToS3=(data,filename)=>{
 
-    const BUCKET_NAME = 'mybucketofaws';  // process.env.BUCKET_NAME;
-    const IAM_USER_KEY = 'AKIAXVOJP5WDBNRDLSNS';   // process.env.IAM_USER_KEY;
-    const IAM_USER_SECRET = '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'; //process.env.IAM_USER_SECRET;
+    const BUCKET_NAME = process.env.BUCKET_NAME;
+    const IAM_USER_KEY = process.env.IAM_USER_KEY;
+    const IAM_USER_SECRET = process.env.IAM_USER_SECRET;
 
     let s3bucket = new AWS.S3({
         accessKeyId:IAM_USER_KEY,
@@ -15,16 +15,16 @@ const uploadToS3=(data,filename)=>{
             Bucket:BUCKET_NAME,
             Key:filename,
             Body:data,
-            ACL:'public-read'
+            ACL:'public-read' // An object ACL is the only way to grant access to objects that are not owned by the bucket owner
         }
 
         return new Promise((resolve,reject)=>{
 
             s3bucket.upload(params,(err,s3response)=>{
-                console.log('inside ')
+               
                 if(err){
-                    console.log('Something went wrong') 
-                    console.log(err)
+
+                    console.log('Something went wrong', err)
                     reject(err) 
                 }
                 else

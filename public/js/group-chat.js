@@ -1,15 +1,18 @@
-const socket = io();
+const socket = io(); // Initialize a WebSocket connection
 
+// Listen for a 'connect' event when the WebSocket connection is established
 socket.on('connect', ()=>{
     console.log('Server is Printing it to the client side',socket.id)
-    const groupId = localStorage.getItem('groupid');
-    socket.emit('joinRoom', groupId)
+    const groupId = localStorage.getItem('groupid');     // 'groupid' value from client's localStorage
+    socket.emit('joinRoom', groupId);      // Emit a 'joinRoom' event to the server, passing the 'groupId'
 })
 
+// Listen for a 'receivedMsg' event from the server
 socket.on('receivedMsg',(msg)=>{
   console.log(msg)
-  showMessage(msg);
+  showMessage(msg);    // Call a function to display the received message in the client's interface
  }) ;
+
 
 /********************  decode the token  *****************/
 function parseJwt (token) {
@@ -24,18 +27,9 @@ function parseJwt (token) {
 
 window.addEventListener("DOMContentLoaded",async()=>{
     try {
-            const name = localStorage.getItem("name");
+            //const name = localStorage.getItem("name");
             const groupName = localStorage.getItem("groupName"); 
             const groupid = localStorage.getItem('groupid');           
-            if (name) {
-              alert(`welcome ${name}`);
-              localStorage.removeItem("name");
-              
-              if(groupName){
-              const newUser = document.getElementById("newUser");
-              newUser.textContent = `${name} joined the ${groupName}`;
-              }
-            }
            
             if(groupName){
               const group = document.getElementById('group');
@@ -43,15 +37,15 @@ window.addEventListener("DOMContentLoaded",async()=>{
 
               //button for group details
               const infoBtn = document.getElementById('info');
+
               infoBtn.className = 'btn btn-success btn-sm';
               infoBtn.textContent = 'Details';
   
               infoBtn.addEventListener('click',()=>{
                 localStorage.setItem('groupid',groupId);
-                //localStorage.setItem('link',`http://16.170.219.218/signup.html?groupId=${groupId}`) // group link to share
-                window.location.href = `admin.html?groupId=${groupId}`;
+                window.location.href = `group-details.html?groupId=${groupId}`;
               })
-
+            
               group.appendChild(infoBtn);
             }
 
@@ -63,9 +57,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
             if(groupid !== null){
               console.log('**************here')
             
+            const checkAdmin = await axios.get(`http://13.51.156.137/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
 
-            const checkAdmin = await axios.get(`http://16.170.219.218/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
-            //console.log('yes admin ',checkAdmin.data.admin.isAdmin)
             if(checkAdmin.data.admin.isAdmin === true){ 
             const groupLink = localStorage.getItem("link");
             console.log(groupLink)
@@ -79,33 +72,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
                 localStorage.removeItem('link');
             }
           }
-            // group list for members and admin
-            const groups = await axios.get(`http://16.170.219.218/group/group-list/${userId}`,{headers:{Authorization:token}}) 
-            console.log('Group list ',groups);
-            const groupList = document.getElementById('groupList');
-            groups.data.list.forEach((group) => {
-                    const groupId = group.id;
-                    const groupName = group.groupName;
-                    const groupDiv = document.createElement('div');
-                    groupDiv.textContent = groupName;
-                    groupDiv.style.paddingLeft = '27%';
-                    groupDiv.style.fontWeight = "bold";
-                                          
-                    groupDiv.addEventListener('click', async() => {
-                      localStorage.setItem('groupid', groupId);
-                      localStorage.setItem('groupName', groupName);
-                      console.log('*********',userId,groupId)
-                      const admin = await axios.get(`http://16.170.219.218/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
-                      console.log(admin,'*******' );
-                      if(admin.data.admin.isAdmin === true) 
-                      { localStorage.setItem('link',`http://16.170.219.218/signup.html?groupId=${groupId}`)}
-                      else{ localStorage.removeItem('link') }
-                    window.location.href = `group-chat.html?groupId=${groupId}`;
-                    }); 
-                  groupList.appendChild(groupDiv);
-            });
 
-            // load messages from local storage
+            // load old messages from local storage
             let lastMsgId = 0;
             const messages = JSON.parse(localStorage.getItem('messages')) || []; 
             const groupId = localStorage.getItem('groupid');
@@ -116,48 +84,50 @@ window.addEventListener("DOMContentLoaded",async()=>{
                  const oldMsg = document.createElement('div');
                  oldMsg.classList.add('message-box');
 
-                 oldMsg.textContent = messages[i].memberName+' - '+ messages[i].message;
+                 if(userId == messages[i].userId){
+                    oldMsg.textContent = 'You - '+ messages[i].message;
+                 }else{
+                    oldMsg.textContent = messages[i].memberName +' - '+ messages[i].message;
+                 }
              
                  oldMsgList.appendChild(oldMsg);
-                 lastMsgId = messages[i].id;
-                 
+                 lastMsgId = messages[i].id;    
               } 
-            }  console.log('last message id ',lastMsgId);
-            // setInterval(()=>{
-            //         const groupId = localStorage.getItem('groupid');
-            if(lastMsgId>0){ getMessages(lastMsgId,groupid); }
-                     
-            //         document.getElementById('messagelist').textContent = ' ';
-            // },3000);
+            }
+            
+            //get last msg id from the locally stored messages
+            console.log('last message id ',lastMsgId);
+            if(lastMsgId>0){ 
+              getMessages(lastMsgId,groupid); 
+            }
+             
     }
     catch(error){
             console.log(error);
-            document.getElementById('newUser').textContent = 'Something Went Wrong';
+            document.getElementById('info').textContent = 'Something Went Wrong';
             //window.location.href = 'signup.html';
     }
 });
 
+// s
 const getMessages = async (lastMsgId,groupId) => {
  try {
     console.log(lastMsgId);
     const token = localStorage.getItem("token");
 
-    const response = await axios.get(`http://16.170.219.218/message/get-message/${lastMsgId}/${groupId}`,
+    const response = await axios.get(`http://13.51.156.137/message/get-message/${lastMsgId}/${groupId}`,
     { headers: { Authorization: token }});
-    
-    //console.log('get messages',response.data.message);
-    
+        
     if (response.data.message !== 'No messages found') {      
       for (var i = 0; i < response.data.message.length; i++) {
         let newMsg = response.data.message[i];
         console.log('new msg ',newMsg);
-        //messages.push(newMsg);
         showMessage(newMsg);
       }
     }
   }catch(error){
     console.log(error);
-    document.getElementById('newUser').textContent = 'Something Went Wrong';        
+    document.getElementById('info').textContent = 'Something Went Wrong';        
   }
 };       
   
@@ -176,8 +146,7 @@ const send = async(event) => {
 
          const msgDetails={ id,name, message }
           
-         //console.log(msgDetails)
-         const response = await axios.post(`http://16.170.219.218/message/post-message/${groupId}`,msgDetails,
+         const response = await axios.post(`http://13.51.156.137/message/post-message/${groupId}`,msgDetails,
          {headers:{'Authorization':token}});
 
          console.log('Before socket',response.data.messageDetails.groupId);
@@ -190,15 +159,22 @@ const send = async(event) => {
     }
 };
 
-
-function showMessage(data){
+// show new messages
+async function showMessage(data){
+  try{
     console.log('Data ',data);
-    
+    const token = localStorage.getItem("token");
+    const decodedToken = await parseJwt(token);
+    const userId = decodedToken.id;
+
     const messageList = document.getElementById('messagelist');
     const message = document.createElement('div'); 
     message.classList.add('message-box');
-   
-    message.innerHTML = data.memberName +' - '+ data.message;
+    if(userId == data.userId){
+          message.innerHTML = 'You - ' + data.message;
+    }else{
+          message.innerHTML = data.memberName +' - '+ data.message;
+    }
     
     messageList.appendChild(message);
 
@@ -210,6 +186,10 @@ function showMessage(data){
       messages.push(data);
       localStorage.setItem('messages', JSON.stringify(messages));
     }
+  }
+  catch(err){
+    document.getElementById('error').innerHTML = `Something went wrong`;
+  }
 };
 
 
@@ -228,7 +208,7 @@ fileInput.addEventListener('input', handleSelectedFile = async(event) => {
       console.log('groupId',groupId)
 
       const token = localStorage.getItem('token');
-      const fileStored = await axios.post(`http://16.170.219.218/file/filestored/${groupId}`,formData,
+      const fileStored = await axios.post(`http://13.51.156.137/file/filestored/${groupId}`,formData,
            {headers:{'Authorization':token,'Content-Type': 'multipart/form-data'}});
 
       console.log('file name',fileStored.data.fileName);
@@ -244,9 +224,16 @@ fileInput.addEventListener('input', handleSelectedFile = async(event) => {
   }
 )  
 
-      const signOut = () =>{
-        localStorage.removeItem('groupid');
-        localStorage.removeItem('groupName');
-        localStorage.removeItem('link');
-        window.location.href = 'login.html'
-      }
+const signOut = () =>{
+  localStorage.removeItem('groupid');
+  localStorage.removeItem('groupName');
+  localStorage.removeItem('link');
+  window.location.href = 'login.html'
+}
+
+const checkGroupList = () =>{
+  localStorage.removeItem('groupid');
+  localStorage.removeItem('groupName');
+  localStorage.removeItem('link');
+  window.location.href = 'group-list.html'
+}

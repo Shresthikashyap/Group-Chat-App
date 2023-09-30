@@ -10,8 +10,4 @@ router.get('/get-message/:lastmsgid/:groupid',userauthentication.authenticate,co
 
 router.post('/post-message/:groupid',userauthentication.authenticate,controller.postGroupMessage);
 
-// router.get('/get-message/:lastmsgid',userauthentication.authenticate,controller.getMessage);
-
-// router.post('/post-message',userauthentication.authenticate,controller.postMessage);
-
 module.exports = router;

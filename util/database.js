@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize( 'group-chat' , 'adani' , 'adani_ki_aulaad' ,{
+const sequelize = new Sequelize( process.env.DB_NAME , process.env.DB_USERNAME , process.env.DB_PASSWORD ,{
     dialect: 'mysql',
-    host: 'database-1.cmcdzmkklrai.eu-north-1.rds.amazonaws.com'
+    host: process.env.DB_HOST
 });
 
 module.exports = sequelize;

@@ -12,7 +12,7 @@ function parseJwt (token) {
 window.addEventListener("DOMContentLoaded",async()=>{
     try {
             const groupName = localStorage.getItem("groupName"); 
-            const groupId = localStorage.getItem('groupid'); console.log('decoded token ',groupName,groupId)
+            const groupId = localStorage.getItem('groupid'); 
             console.log(groupName)
             if(groupName){
               const group = document.getElementById('group');
@@ -24,8 +24,9 @@ window.addEventListener("DOMContentLoaded",async()=>{
             const userId = decodedToken.id;
 
             // if user is admin show the link
-            const checkAdmin = await axios.get(`http://16.170.219.218/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
-            console.log('haan hun mei admin ',checkAdmin.data.admin.isAdmin)
+            const checkAdmin = await axios.get(`http://13.51.156.137/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
+            console.log('haan hun mei admin ',checkAdmin.data.admin)
+            if(checkAdmin.data.admin === null){ window.location.href = `group-list.html?groupId=${groupId}`;};
             if(checkAdmin.data.admin.isAdmin === true){ 
             const groupLink = localStorage.getItem("link");
             console.log(groupLink)
@@ -40,44 +41,17 @@ window.addEventListener("DOMContentLoaded",async()=>{
             }
                
 
-            console.log('user id',decodedToken.id)
-            const groups = await axios.get(`http://16.170.219.218/group/group-list/${userId}`,{headers:{Authorization:token}}) 
-            console.log('Group list ',groups);
-            const groupList = document.getElementById('groupList');
-            groups.data.list.forEach((group) => {
-                    const groupid = group.id;
-                    const groupName = group.groupName;
-                    const groupDiv = document.createElement('div');
-                    groupDiv.textContent = `${groupName}  `;
-                    groupDiv.style.paddingLeft = '27%';
-                    groupDiv.style.fontWeight = "bold";
-                                          
-                    groupDiv.addEventListener('click', async() => {
-                      localStorage.setItem('groupid', groupid);
-                      localStorage.setItem('groupName', groupName);
-                      const admin = await axios.get(`http://16.170.219.218/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
-                      if(admin.data.admin.isAdmin === true) 
-                        { 
-                          localStorage.setItem('link',`http://16.170.219.218/signup.html?groupId=${groupid}`); 
-                        }
-                      else
-                        { localStorage.removeItem('link');  }
-                       window.location.href = `group-chat.html?groupId=${groupid}`;
-                    });
-                    
-                    console.log(groupid, groupId)
-                    if(groupid == groupId){
-                      const exitGroupBtn = document.createElement('button');
-                      exitGroupBtn.className = 'btn btn-danger btn-sm';
-                      exitGroupBtn.textContent = 'Exit Group';
-                      exitGroupBtn.addEventListener('click', async() =>{
-                        await exitGroup(userId,groupId);
-                      }); 
-                      groupDiv.appendChild(exitGroupBtn);
-                    }
-                   
-                  groupList.appendChild(groupDiv);
+            const group = document.getElementById('group');
+            const exitGroupBtn = document.createElement('button');
+            const br = document.createElement('br');
+            exitGroupBtn.className = 'btn btn-secondary btn-sm';
+            exitGroupBtn.innerHTML = 'Exit From Group';
+            exitGroupBtn.addEventListener('click', async() =>{
+            await exitGroup(userId,groupId);
             });
+            group.append(br);
+            group.append(exitGroupBtn);
+
              
             // Main thing starts from here
             console.log('admin data',checkAdmin.data.admin.userId)  //check admin
@@ -97,7 +71,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
                  group.append(deleteGroup);              
                 }
    
-                    const memberList = await axios.get(`http://16.170.219.218/admin/memberlist/${groupId}`,{
+                    const memberList = await axios.get(`http://13.51.156.137/group/memberlist/${groupId}`,{
                         headers:{Authorization:token}
                     })
                     console.log('memberlist',memberList);  //check the data
@@ -107,12 +81,10 @@ window.addEventListener("DOMContentLoaded",async()=>{
 
                       memberList.data.list.forEach(async(member) => {         /*memberlist the loop */
 
-                     // document.getElementById('filelist').textContent = ' ';    //not show the fileliast
-
                         const user = document.createElement('div'); console.log(member.id)
                          
                         //checking admin by passing the member id
-                        const admin = await axios.get(`http://16.170.219.218/admin/checkadmin/${member.id}/${groupId}`,{headers:{Authorization:token}})
+                        const admin = await axios.get(`http://13.51.156.137/admin/checkadmin/${member.id}/${groupId}`,{headers:{Authorization:token}})
                         console.log(admin.data.admin.isAdmin)
                          if(admin.data.admin.isAdmin === true ){
                           user.textContent = `Admin : ${member.name} - ${member.email} - ${member.phone_number}  `;
@@ -132,7 +104,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
                             if(admin.data.admin.isAdmin === true){      // if the member is admin
                               const deleteAdmin = document.createElement('button');
                               deleteAdmin.className = 'btn btn-secondary btn-sm';
-                              deleteAdmin.textContent = 'Remove Admin';
+                              deleteAdmin.textContent = 'Remove as Admin';
                               deleteAdmin.addEventListener('click', async()=>{
                                 console.log(memberId,groupId);
                                 await removeAdmin(memberId,groupId);    //to remove the admin
@@ -150,15 +122,17 @@ window.addEventListener("DOMContentLoaded",async()=>{
 
                               user.append(makeAdmin);                           
                             }
-                                                
+                            
+                            if(userId !== memberId){                  
                              const removeBtn = document.createElement('button');
                              removeBtn.className = 'btn btn-danger btn-sm';
-                             removeBtn.textContent = 'Remove Member';
+                             removeBtn.textContent = 'Remove from Group';
                              removeBtn.addEventListener('click',async()=>{
                              await removeMember(memberId,groupId);   // to remove the member
                              })
         
-                            user.append(removeBtn);                          
+                            user.append(removeBtn); 
+                            }                         
                         }
                       
                         members.appendChild(user);
@@ -175,60 +149,64 @@ window.addEventListener("DOMContentLoaded",async()=>{
         }
     });
 
+    // remove the member
     const removeMember = async(userId,groupId) =>{
         try{
             console.log(userId,groupId)
             const token = localStorage.getItem('token'); 
-            const removedUser = await axios.get(`http://16.170.219.218/admin/removeuser/${userId}/${groupId}`,
+            const removedUser = await axios.get(`http://13.51.156.137/admin/removeuser/${userId}/${groupId}`,
             {headers:{Authorization:token}});
         
             console.log(removedUser);
              alert(' Removed Successfully');
-             window.location.href = `admin.html?groupId=${groupId}`;
+             window.location.href = `group-details.html?groupId=${groupId}`;
         }
         catch(error){
             document.getElementById('failure').textContent = 'Something went wrong';
         }
     }
 
+    // make member a mew admin
     const newAdmin = async(memberId, _groupId) => {
         try{
           console.log(memberId,_groupId)
           const token = localStorage.getItem('token')
-          const adminDetails = await axios.get(`http://16.170.219.218/admin/makeadmin/${memberId}/${_groupId}`,
+          const adminDetails = await axios.get(`http://13.51.156.137/admin/makeadmin/${memberId}/${_groupId}`,
           {headers:{Authorization:token}});
 
           console.log(adminDetails.data);
           alert(`You made a new admin for this Group`);
           //localStorage.removeItem('link');
-          window.location.href = `admin.html?groupId=${_groupId}`;
+          window.location.href = `group-details.html?groupId=${_groupId}`;
         }
         catch(error){
             document.getElementById('failure').textContent = 'Something went wrong';
         }
     }
 
+    // remove member as an admin
     const removeAdmin = async(memberId, _groupId) => {
       try{
         console.log(memberId,_groupId)
         const token = localStorage.getItem('token')
-        const adminDetails = await axios.get(`http://16.170.219.218/admin/removeadmin/${memberId}/${_groupId}`,
+        const adminDetails = await axios.get(`http://13.51.156.137/admin/removeadmin/${memberId}/${_groupId}`,
         {headers:{Authorization:token}});
 
         console.log(adminDetails.data);
         alert(`You are no longer admin for this Group`);
         //localStorage.removeItem('link');
-        window.location.href = `admin.html?groupId=${_groupId}`;
+        window.location.href = `group-details.html?groupId=${_groupId}`;
       }
       catch(error){
           document.getElementById('failure').textContent = 'Something went wrong';
       }
   }
 
+  //exit from group
   const exitGroup = async(userId,groupId) =>{
     try{
       const token = localStorage.getItem('token');
-      const group = await axios.get(`http://16.170.219.218/admin/exitgroup/${userId}/${groupId}`,{
+      const group = await axios.get(`http://13.51.156.137/group/exitgroup/${userId}/${groupId}`,{
         headers:{Authorization:token}});
 
         console.log(group.data.message);
@@ -236,18 +214,19 @@ window.addEventListener("DOMContentLoaded",async()=>{
         localStorage.removeItem('groupid');
         localStorage.removeItem('groupName');
         alert('You are no longer a part of this group')
-        window.location.href = `login.html`;
+        window.location.href = `group-list.html`;
     }
     catch(error){
       document.getElementById('failure').textContent = 'Something went wrong';
     }
   }
 
+  //delete the group
     const deleteTheGroup = async(groupId) => {
       try{
           console.log(groupId);
           const token = localStorage.getItem('token'); 
-          const group = await axios.get(`http://16.170.219.218/admin/deletegroup/${groupId}`,{
+          const group = await axios.get(`http://13.51.156.137/admin/deletegroup/${groupId}`,{
             headers:{Authorization:token}});
 
           console.log(group.data.message);
@@ -255,7 +234,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
           localStorage.removeItem('groupid');
           localStorage.removeItem('groupName');
           alert('Group deleted successfully')
-          window.location.href = `group-chat.html`;
+          window.location.href = `group-list.html`;
 
       }
       catch(error){   
@@ -263,21 +242,17 @@ window.addEventListener("DOMContentLoaded",async()=>{
       }
     }
 
+    //get stored file
   const getStoredFiles = async(groupId) => {
       try{
           const token = localStorage.getItem('token'); 
-          const storedFiles = await axios.get(`http://16.170.219.218/file/getfiles/${groupId}`,
+          const storedFiles = await axios.get(`http://13.51.156.137/file/getfiles/${groupId}`,
           {headers:{Authorization:token}});
 
           console.log(storedFiles.data);
 
           if(storedFiles.data.length > 0){ 
             document.getElementById('memberlist').textContent = ' ';
-
-            // document.getElementById('file-container').textContent = 'Click to see all Group members ';
-            // document.getElementById('file-container').addEventListener('click', async()=>{
-            //     window.location.href = 
-            // })
 
             const urls = document.getElementById('filelist');
             urls.style.height ='244px'; 
@@ -303,9 +278,18 @@ window.addEventListener("DOMContentLoaded",async()=>{
       }
     }
 
+   //sign out from the page
     const signOut = () =>{
       localStorage.removeItem('groupid');
       localStorage.removeItem('groupName');
       localStorage.removeItem('link');
       window.location.href = 'login.html'
+    }
+
+    //move to group list page
+    const checkGroupList = () =>{
+      localStorage.removeItem('groupid');
+      localStorage.removeItem('groupName');
+      localStorage.removeItem('link');
+      window.location.href = 'group-list.html'
     }

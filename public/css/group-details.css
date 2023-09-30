@@ -1,0 +1,20 @@
+h1,h2,h3{
+    text-align: center;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 1000;
+    color: rgb(9, 99, 9);
+    text-shadow:5px 5px 10px rgb(88, 121, 88);
+  }
+  body{
+    background-color: rgb(106, 196, 106);        }
+
+.chat-box{
+  background-color: rgb(226, 185, 131);
+  border: 5px solid #2b6b00;
+  border-radius: 5px;
+  box-shadow: 20px 20px rgb(49, 83, 33);
+  padding-bottom: 3%;
+}
+#filelist, #memberlist{ 
+      overflow-y: scroll;
+}

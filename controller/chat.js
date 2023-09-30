@@ -2,7 +2,7 @@ const Message = require('../model/Chat');
 const sequelize = require('../util/database');
 
 const postGroupMessage = async(req,res) =>{
-   // const t = await sequelize.transaction();
+   
     try{      
      const { groupid } = req.params;
      const { id,name, message} = req.body; 
@@ -12,11 +12,10 @@ const postGroupMessage = async(req,res) =>{
      
      const messageDetails = await Message.create({message:message, memberName:name, userId:id, groupId: groupid});
 
-    // await t.commit();
      res.status(200).send({messageDetails});
     }
     catch(error){
-      //await t.rollback();
+
       console.log(error);
      res.status(500).json({error:'!!! Something went wrong'});
     }

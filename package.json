@@ -1,7 +1,6 @@
 {
   "name": "group-chat-app",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -27,5 +26,6 @@
     "node-cron": "^3.0.2",
     "sequelize": "^6.31.0",
     "socket.io": "^4.6.1"
-  }
+  },
+  "description": ""
 }
