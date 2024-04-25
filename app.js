@@ -31,10 +31,14 @@ app.use(bodyParser.urlencoded({extended: true}));  //entend: true => precises th
 //The extended option allows to choose between parsing the URL-encoded data with the querystring library (when false ) or the qs library (when true ).
 
 // app.use(cors({
-//     origin:"http://13.51.156.137",
+//     origin:"http://3.27.43.97:3000",
 // })); 
 
-app.use(express.static('public'));
+app.use(express.static('public', { 
+    dotfiles: 'ignore', 
+    index: false,
+    extensions: ['html', 'htm'] 
+  }));
   
 app.use('/user',userRoutes);
 app.use('/message',chatRoutes);
