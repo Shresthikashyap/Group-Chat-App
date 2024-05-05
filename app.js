@@ -5,9 +5,9 @@ const http = require('http');
 const socketio = require('socket.io');
 const cron = require('node-cron');
 
-const User = require('./model/User');
-const Message = require('./model/Chat');
-const Group = require('./model/Group');
+const User = require('./model/user');
+const Message = require('./model/chat');
+const Group = require('./model/group');
 const UserGroup = require('./model/UserGroup');
 const GroupFiles = require('./model/GroupFiles');
 const ArchievedMessage = require('./model/ArchievedChat');
