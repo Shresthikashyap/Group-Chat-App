@@ -57,7 +57,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
             if(groupid !== null){
               console.log('**************here')
             
-            const checkAdmin = await axios.get(`http://23.20.253.19:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
+            const checkAdmin = await axios.get(`http://54.161.13.80:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
 
             if(checkAdmin.data.admin.isAdmin === true){ 
             const groupLink = localStorage.getItem("link");
@@ -115,7 +115,7 @@ const getMessages = async (lastMsgId,groupId) => {
     console.log(lastMsgId);
     const token = localStorage.getItem("token");
 
-    const response = await axios.get(`http://23.20.253.19:3000/message/get-message/${lastMsgId}/${groupId}`,
+    const response = await axios.get(`http://54.161.13.80:3000/message/get-message/${lastMsgId}/${groupId}`,
     { headers: { Authorization: token }});
         
     if (response.data.message !== 'No messages found') {      
@@ -146,7 +146,7 @@ const send = async(event) => {
 
          const msgDetails={ id,name, message }
           
-         const response = await axios.post(`http://23.20.253.19:3000/message/post-message/${groupId}`,msgDetails,
+         const response = await axios.post(`http://54.161.13.80:3000/message/post-message/${groupId}`,msgDetails,
          {headers:{'Authorization':token}});
 
          console.log('Before socket',response.data.messageDetails.groupId);
@@ -208,7 +208,7 @@ fileInput.addEventListener('input', handleSelectedFile = async(event) => {
       console.log('groupId',groupId)
 
       const token = localStorage.getItem('token');
-      const fileStored = await axios.post(`http://23.20.253.19:3000/file/filestored/${groupId}`,formData,
+      const fileStored = await axios.post(`http://54.161.13.80:3000/file/filestored/${groupId}`,formData,
            {headers:{'Authorization':token,'Content-Type': 'multipart/form-data'}});
 
       console.log('file name',fileStored.data.fileName);
