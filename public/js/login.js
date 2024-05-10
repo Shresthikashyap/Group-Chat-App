@@ -16,9 +16,9 @@ const save = async(event) =>{
         let response;
 
         if(groupId){
-            response = await axios.post(`http://23.20.253.19:3000/user/login?groupId=${groupId}`,loginDetails);
+            response = await axios.post(`http://54.161.13.80:3000/user/login?groupId=${groupId}`,loginDetails);
         }else{
-            response = await axios.post("http://23.20.253.19:3000/user/login",loginDetails);
+            response = await axios.post("http://54.161.13.80:3000/user/login",loginDetails);
         }
         
         console.log('response',response)
