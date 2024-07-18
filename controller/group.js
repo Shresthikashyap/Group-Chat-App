@@ -1,6 +1,6 @@
 const UserGroup = require('../model/UserGroup');
-const Group = require('../model/Group')
-const User = require('../model/User');
+const Group = require('../model/group')
+const User = require('../model/user');
 
 const createGroup = async(req,res) =>{
 

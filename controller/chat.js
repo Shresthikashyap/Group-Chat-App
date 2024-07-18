@@ -1,4 +1,4 @@
-const Message = require('../model/Chat');
+const Message = require('../model/chat');
 const sequelize = require('../util/database');
 
 const postGroupMessage = async(req,res) =>{

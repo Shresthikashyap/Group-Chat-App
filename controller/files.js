@@ -1,5 +1,5 @@
 const GroupFiles = require('../model/GroupFiles');
-const Message = require('../model/Chat');
+const Message = require('../model/chat');
 const S3Service = require('../services/S3services');
 
 const downloadFiles = async(req,res) => {
