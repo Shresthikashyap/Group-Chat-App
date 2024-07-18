@@ -9,7 +9,7 @@ socket.on('connect', ()=>{
 
 // Listen for a 'receivedMsg' event from the server
 socket.on('receivedMsg',(msg)=>{
-  console.log(msg)
+  console.log('msg ',msg)
   showMessage(msg);    // Call a function to display the received message in the client's interface
  }) ;
 
@@ -57,7 +57,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
             if(groupid !== null){
               console.log('**************here')
             
-            const checkAdmin = await axios.get(`http://3.27.43.97:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
+            const checkAdmin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
 
             if(checkAdmin.data.admin.isAdmin === true){ 
             const groupLink = localStorage.getItem("link");
@@ -104,7 +104,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
     }
     catch(error){
             console.log(error);
-            document.getElementById('info').textContent = 'Something Went Wrong';
+            //document.getElementById('info').textContent = 'Something Went Wrong';
             //window.location.href = 'signup.html';
     }
 });
@@ -115,9 +115,10 @@ const getMessages = async (lastMsgId,groupId) => {
     console.log(lastMsgId);
     const token = localStorage.getItem("token");
 
-    const response = await axios.get(`http://3.27.43.97:3000/message/get-message/${lastMsgId}/${groupId}`,
+    const response = await axios.get(`http://localhost:3000/message/get-message/${lastMsgId}/${groupId}`,
     { headers: { Authorization: token }});
         
+    console.log('get meassage ',response)
     if (response.data.message !== 'No messages found') {      
       for (var i = 0; i < response.data.message.length; i++) {
         let newMsg = response.data.message[i];
@@ -126,7 +127,7 @@ const getMessages = async (lastMsgId,groupId) => {
       }
     }
   }catch(error){
-    console.log(error);
+    console.log('error ',error);
     document.getElementById('info').textContent = 'Something Went Wrong';        
   }
 };       
@@ -146,7 +147,7 @@ const send = async(event) => {
 
          const msgDetails={ id,name, message }
           
-         const response = await axios.post(`http://3.27.43.97:3000/message/post-message/${groupId}`,msgDetails,
+         const response = await axios.post(`http://localhost:3000/message/post-message/${groupId}`,msgDetails,
          {headers:{'Authorization':token}});
 
          console.log('Before socket',response.data.messageDetails.groupId);
@@ -208,7 +209,7 @@ fileInput.addEventListener('input', handleSelectedFile = async(event) => {
       console.log('groupId',groupId)
 
       const token = localStorage.getItem('token');
-      const fileStored = await axios.post(`http://3.27.43.97:3000/file/filestored/${groupId}`,formData,
+      const fileStored = await axios.post(`http://localhost:3000/file/filestored/${groupId}`,formData,
            {headers:{'Authorization':token,'Content-Type': 'multipart/form-data'}});
 
       console.log('file name',fileStored.data.fileName);

@@ -16,7 +16,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
         const userId = decodedToken.id;
 
             // group list for members and admin
-            const groups = await axios.get(`http://3.27.43.97:3000/group/group-list/${userId}`,{headers:{Authorization:token}}) 
+            const groups = await axios.get(`http://localhost:3000/group/group-list/${userId}`,{headers:{Authorization:token}}) 
             console.log('Group list ',groups);
             const groupList = document.getElementById('groupList');
             groups.data.list.forEach((group) => {
@@ -33,10 +33,10 @@ window.addEventListener("DOMContentLoaded",async()=>{
                       localStorage.setItem('groupid', groupId);
                       localStorage.setItem('groupName', groupName);
 
-                      const admin = await axios.get(`http://3.27.43.97:3000/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
+                      const admin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
                       
                       if(admin.data.admin.isAdmin === true) 
-                      { localStorage.setItem('link',`http://3.27.43.97:3000/signup.html?groupId=${groupId}`)}
+                      { localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`)}
                       else{ localStorage.removeItem('link') }
                     window.location.href = `group-chat.html?groupId=${groupId}`;
                     }); 
