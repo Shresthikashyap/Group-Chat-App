@@ -5,18 +5,18 @@ const http = require('http');
 const socketio = require('socket.io');
 const cron = require('node-cron');
 
-const User = require('./backend/model/user');
-const Message = require('./backend/model/chat');
-const Group = require('./backend/model/group');
-const UserGroup = require('./backend/model/UserGroup');
-const GroupFiles = require('./backend/model/GroupFiles');
-const ArchievedMessage = require('./backend/model/ArchievedChat');
+const User = require('./model/user');
+const Message = require('./model/chat');
+const Group = require('./model/group');
+const UserGroup = require('./model/UserGroup');
+const GroupFiles = require('./model/GroupFiles');
+const ArchievedMessage = require('./model/ArchievedChat');
 
-const userRoutes = require('./backend/routes/user');
-const chatRoutes = require('./backend/routes/chat');
-const groupRoutes = require('./backend/routes/group');
-const adminRoutes = require('./backend/routes/admin');
-const fileRoutes = require('./backend/routes/group-files');
+const userRoutes = require('./routes/user');
+const chatRoutes = require('./routes/chat');
+const groupRoutes = require('./routes/group');
+const adminRoutes = require('./routes/admin');
+const fileRoutes = require('./routes/group-files');
 
 //var cors = require('cors');
 const app = express();
