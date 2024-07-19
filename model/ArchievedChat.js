@@ -1,4 +1,4 @@
-const sequelize = require('../../util/database');
+const sequelize = require('../util/database');
 const Sequelize = require('sequelize');
 
 const ArchievedMessage = sequelize.define('archievedmessage',{

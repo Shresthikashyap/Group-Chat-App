@@ -3,7 +3,7 @@ const Group = require('../model/group');
 const User = require('../model/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); 
-const sequelize = require('../../util/database');
+const sequelize = require('../util/database');
 
 exports.addUser = async(req, res) => {
   const t = await sequelize.transaction();
