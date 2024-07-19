@@ -24,10 +24,10 @@ const save = async(event)=>{
         let response;
         
         if(groupId){
-            response = await axios.post(`http://13.51.156.137/user/signup?groupId=${groupId}`,obj);
+            response = await axios.post(`https://group-chat-app-ucz4.onrender.com/user/signup?groupId=${groupId}`,obj);
         }
         else{
-            response = await axios.post("http://13.51.156.137/user/signup",obj);
+            response = await axios.post("https://group-chat-app-ucz4.onrender.com/user/signup",obj);
         }
         
        console.log(response); 

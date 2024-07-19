@@ -24,7 +24,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
             const userId = decodedToken.id;
 
             // if user is admin show the link
-            const checkAdmin = await axios.get(`http://13.51.156.137/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
+            const checkAdmin = await axios.get(`https://group-chat-app-ucz4.onrender.com/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
             console.log('haan hun mei admin ',checkAdmin.data.admin)
             if(checkAdmin.data.admin === null){ window.location.href = `group-list.html?groupId=${groupId}`;};
             if(checkAdmin.data.admin.isAdmin === true){ 
@@ -71,7 +71,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
                  group.append(deleteGroup);              
                 }
    
-                    const memberList = await axios.get(`http://13.51.156.137/group/memberlist/${groupId}`,{
+                    const memberList = await axios.get(`https://group-chat-app-ucz4.onrender.com/group/memberlist/${groupId}`,{
                         headers:{Authorization:token}
                     })
                     console.log('memberlist',memberList);  //check the data
@@ -84,7 +84,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
                         const user = document.createElement('div'); console.log(member.id)
                          
                         //checking admin by passing the member id
-                        const admin = await axios.get(`http://13.51.156.137/admin/checkadmin/${member.id}/${groupId}`,{headers:{Authorization:token}})
+                        const admin = await axios.get(`https://group-chat-app-ucz4.onrender.com/admin/checkadmin/${member.id}/${groupId}`,{headers:{Authorization:token}})
                         console.log(admin.data.admin.isAdmin)
                          if(admin.data.admin.isAdmin === true ){
                           user.textContent = `Admin : ${member.name} - ${member.email} - ${member.phone_number}  `;
@@ -154,7 +154,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
         try{
             console.log(userId,groupId)
             const token = localStorage.getItem('token'); 
-            const removedUser = await axios.get(`http://13.51.156.137/admin/removeuser/${userId}/${groupId}`,
+            const removedUser = await axios.get(`https://group-chat-app-ucz4.onrender.com/admin/removeuser/${userId}/${groupId}`,
             {headers:{Authorization:token}});
         
             console.log(removedUser);
@@ -171,7 +171,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
         try{
           console.log(memberId,_groupId)
           const token = localStorage.getItem('token')
-          const adminDetails = await axios.get(`http://13.51.156.137/admin/makeadmin/${memberId}/${_groupId}`,
+          const adminDetails = await axios.get(`https://group-chat-app-ucz4.onrender.com/admin/makeadmin/${memberId}/${_groupId}`,
           {headers:{Authorization:token}});
 
           console.log(adminDetails.data);
@@ -189,7 +189,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
       try{
         console.log(memberId,_groupId)
         const token = localStorage.getItem('token')
-        const adminDetails = await axios.get(`http://13.51.156.137/admin/removeadmin/${memberId}/${_groupId}`,
+        const adminDetails = await axios.get(`https://group-chat-app-ucz4.onrender.com/admin/removeadmin/${memberId}/${_groupId}`,
         {headers:{Authorization:token}});
 
         console.log(adminDetails.data);
@@ -206,7 +206,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
   const exitGroup = async(userId,groupId) =>{
     try{
       const token = localStorage.getItem('token');
-      const group = await axios.get(`http://13.51.156.137/group/exitgroup/${userId}/${groupId}`,{
+      const group = await axios.get(`https://group-chat-app-ucz4.onrender.com/group/exitgroup/${userId}/${groupId}`,{
         headers:{Authorization:token}});
 
         console.log(group.data.message);
@@ -226,7 +226,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
       try{
           console.log(groupId);
           const token = localStorage.getItem('token'); 
-          const group = await axios.get(`http://13.51.156.137/admin/deletegroup/${groupId}`,{
+          const group = await axios.get(`https://group-chat-app-ucz4.onrender.com/admin/deletegroup/${groupId}`,{
             headers:{Authorization:token}});
 
           console.log(group.data.message);
@@ -246,7 +246,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
   const getStoredFiles = async(groupId) => {
       try{
           const token = localStorage.getItem('token'); 
-          const storedFiles = await axios.get(`http://13.51.156.137/file/getfiles/${groupId}`,
+          const storedFiles = await axios.get(`https://group-chat-app-ucz4.onrender.com/file/getfiles/${groupId}`,
           {headers:{Authorization:token}});
 
           console.log(storedFiles.data);
