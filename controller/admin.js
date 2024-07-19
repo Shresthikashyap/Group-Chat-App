@@ -1,7 +1,7 @@
 const UserGroup = require('../model/UserGroup');
 const User = require('../model/user');
 const Group = require('../model/group');
-const sequelize = require('../util/database');
+const sequelize = require('../../util/database');
 
 const checkAdmin = async(req,res) => {
     try{
