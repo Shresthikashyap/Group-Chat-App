@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser'); 
-const sequelize = require('./backend/util/database');
+const sequelize = require('./util/database');
 const http = require('http');
 const socketio = require('socket.io');
 const cron = require('node-cron');
