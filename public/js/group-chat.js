@@ -128,7 +128,7 @@ const getMessages = async (lastMsgId,groupId) => {
     }
   }catch(error){
     console.log('error ',error);
-    document.getElementById('info').textContent = 'Something Went Wrong';        
+    //document.getElementById('info').textContent = 'Something Went Wrong';        
   }
 };       
   
