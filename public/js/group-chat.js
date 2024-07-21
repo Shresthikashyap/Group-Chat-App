@@ -156,7 +156,8 @@ const send = async(event) => {
          socket.emit('message', response.data.messageDetails);
     }
     catch(err){
-            document.getElementById('error').innerHTML = `Something went wrong`;
+        console.log('error ',error);
+        //document.getElementById('error').innerHTML = `Something went wrong`;
     }
 };
 
@@ -189,7 +190,8 @@ async function showMessage(data){
     }
   }
   catch(err){
-    document.getElementById('error').innerHTML = `Something went wrong`;
+      console.log('error ',error);
+    //document.getElementById('error').innerHTML = `Something went wrong`;
   }
 };
 
@@ -220,7 +222,8 @@ fileInput.addEventListener('input', handleSelectedFile = async(event) => {
       socket.emit('message',fileStored.data.msg.message);             
     }
   catch(err){
-            document.getElementById('error').innerHTML = `Something went wrong`;
+      console.log('error ',error);
+           // document.getElementById('error').innerHTML = `Something went wrong`;
     }
   }
 )  
