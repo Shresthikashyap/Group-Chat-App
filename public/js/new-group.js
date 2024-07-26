@@ -37,6 +37,7 @@ const newGroup = async(event) =>{
         window.location.href = `group-chat.html?groupId=${groupId}`;
     }
     catch(error){
-        document.getElementById('failure').innerHTML = 'Something went Wrong';
+        console.log(error)
+        //document.getElementById('failure').innerHTML = 'Something went Wrong';
     }
 }

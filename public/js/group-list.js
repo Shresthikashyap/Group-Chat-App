@@ -46,7 +46,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
 
     }
     catch(err){
-            document.getElementById('error').innerHTML = `Something went wrong`;
+        console.log(error)
+            //document.getElementById('error').innerHTML = `Something went wrong`;
     }
 });
 

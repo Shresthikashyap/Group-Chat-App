@@ -145,7 +145,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
                 
         }
         catch(err){
-            document.getElementById('failure').textContent = 'Something went wrong';
+          console.log(error)
+            //document.getElementById('failure').textContent = 'Something went wrong';
         }
     });
 
@@ -162,7 +163,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
              window.location.href = `group-details.html?groupId=${groupId}`;
         }
         catch(error){
-            document.getElementById('failure').textContent = 'Something went wrong';
+          console.log(error)
+            ///document.getElementById('failure').textContent = 'Something went wrong';
         }
     }
 
@@ -180,7 +182,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
           window.location.href = `group-details.html?groupId=${_groupId}`;
         }
         catch(error){
-            document.getElementById('failure').textContent = 'Something went wrong';
+          console.log(error)
+            //document.getElementById('failure').textContent = 'Something went wrong';
         }
     }
 
@@ -198,7 +201,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
         window.location.href = `group-details.html?groupId=${_groupId}`;
       }
       catch(error){
-          document.getElementById('failure').textContent = 'Something went wrong';
+        console.log(error)
+          //document.getElementById('failure').textContent = 'Something went wrong';
       }
   }
 
@@ -217,7 +221,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
         window.location.href = `group-list.html`;
     }
     catch(error){
-      document.getElementById('failure').textContent = 'Something went wrong';
+      console.log(error)
+      //document.getElementById('failure').textContent = 'Something went wrong';
     }
   }
 
@@ -238,7 +243,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
 
       }
       catch(error){   
-        document.getElementById('failure').textContent = 'Something went wrong';
+        console.log(error)
+        //document.getElementById('failure').textContent = 'Something went wrong';
       }
     }
 
@@ -274,7 +280,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
       }
       catch(err){
         console.log(err);
-        document.getElementById('failure').textContent = 'Something went wrong';
+        //document.getElementById('failure').textContent = 'Something went wrong';
       }
     }
 
