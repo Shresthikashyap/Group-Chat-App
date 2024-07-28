@@ -25,11 +25,8 @@ const newGroup = async(event) =>{
         const decodedToken = await parseJwt(token);
         const userId = decodedToken.id
 
-<<<<<<< HEAD
-        const response = await axios.post(`http://localhost:3000/group/new-group/${userId}`,newGroupDetails,{
-=======
-        const response = await axios.post(`https://group-chat-app-ucz4.onrender.com/group/new-group/${userId}`,newGroupDetails,{
->>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
+
+        const response = await axios.post(`https://group-chat-app-4a7q.onrender.com/group/new-group/${userId}`,newGroupDetails,{
             headers:{'Authorization':token}
         });
 
@@ -37,11 +34,8 @@ const newGroup = async(event) =>{
         localStorage.setItem('groupid',response.data.newGroupDetails.id);
         localStorage.setItem('groupName',response.data.newGroupDetails.groupName);
         const groupId = response.data.newGroupDetails.id;
-<<<<<<< HEAD
-        localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`) // group link to share 
-=======
-        localStorage.setItem('link',`https://group-chat-app-ucz4.onrender.com/signup.html?groupId=${groupId}`) // group link to share 
->>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
+
+        localStorage.setItem('link',`https://group-chat-app-4a7q.onrender.com/signup.html?groupId=${groupId}`) // group link to share 
         window.location.href = `group-chat.html?groupId=${groupId}`;
     }
     catch(error){

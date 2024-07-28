@@ -16,11 +16,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
         const userId = decodedToken.id;
 
             // group list for members and admin
-<<<<<<< HEAD
-            const groups = await axios.get(`http://localhost:3000/group/group-list/${userId}`,{headers:{Authorization:token}}) 
-=======
-            const groups = await axios.get(`https://group-chat-app-ucz4.onrender.com/group/group-list/${userId}`,{headers:{Authorization:token}}) 
->>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
+
+            const groups = await axios.get(`https://group-chat-app-4a7q.onrender.com/group/group-list/${userId}`,{headers:{Authorization:token}}) 
             console.log('Group list ',groups);
             const groupList = document.getElementById('groupList');
             groups.data.list.forEach((group) => {
@@ -37,17 +34,11 @@ window.addEventListener("DOMContentLoaded",async()=>{
                       localStorage.setItem('groupid', groupId);
                       localStorage.setItem('groupName', groupName);
 
-<<<<<<< HEAD
-                      const admin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
+
+                      const admin = await axios.get(`https://group-chat-app-4a7q.onrender.com/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
                       
                       if(admin.data.admin.isAdmin === true) 
-                      { localStorage.setItem('link',`http://localhost:3000/signup.html?groupId=${groupId}`)}
-=======
-                      const admin = await axios.get(`https://group-chat-app-ucz4.onrender.com/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
-                      
-                      if(admin.data.admin.isAdmin === true) 
-                      { localStorage.setItem('link',`https://group-chat-app-ucz4.onrender.com/signup.html?groupId=${groupId}`)}
->>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
+                      { localStorage.setItem('link',`https://group-chat-app-4a7q.onrender.com/signup.html?groupId=${groupId}`)}
                       else{ localStorage.removeItem('link') }
                     window.location.href = `group-chat.html?groupId=${groupId}`;
                     }); 
