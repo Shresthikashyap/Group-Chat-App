@@ -57,11 +57,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
             if(groupid !== null){
               console.log('**************here')
             
-<<<<<<< HEAD
             const checkAdmin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
-=======
-            const checkAdmin = await axios.get(`https://group-chat-app-ucz4.onrender.com/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
->>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
+
 
             if(checkAdmin.data.admin.isAdmin === true){ 
             const groupLink = localStorage.getItem("link");
@@ -119,11 +116,7 @@ const getMessages = async (lastMsgId,groupId) => {
     console.log(lastMsgId);
     const token = localStorage.getItem("token");
 
-<<<<<<< HEAD
     const response = await axios.get(`http://localhost:3000/message/get-message/${lastMsgId}/${groupId}`,
-=======
-    const response = await axios.get(`https://group-chat-app-ucz4.onrender.com/message/get-message/${lastMsgId}/${groupId}`,
->>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
     { headers: { Authorization: token }});
         
     console.log('get meassage ',response)
@@ -135,11 +128,9 @@ const getMessages = async (lastMsgId,groupId) => {
       }
     }
   }catch(error){
-<<<<<<< HEAD
+
     console.log(error);
-=======
-    console.log('error ',error);
->>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
+
     //document.getElementById('info').textContent = 'Something Went Wrong';        
   }
 };       
@@ -159,11 +150,8 @@ const send = async(event) => {
 
          const msgDetails={ id,name, message }
           
-<<<<<<< HEAD
          const response = await axios.post(`http://localhost:3000/message/post-message/${groupId}`,msgDetails,
-=======
-         const response = await axios.post(`https://group-chat-app-ucz4.onrender.com/message/post-message/${groupId}`,msgDetails,
->>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
+
          {headers:{'Authorization':token}});
 
          console.log('Before socket',response.data.messageDetails.groupId);
@@ -225,11 +213,9 @@ fileInput.addEventListener('input', handleSelectedFile = async(event) => {
       console.log('groupId',groupId)
 
       const token = localStorage.getItem('token');
-<<<<<<< HEAD
+
       const fileStored = await axios.post(`http://localhost:3000/file/filestored/${groupId}`,formData,
-=======
-      const fileStored = await axios.post(`https://group-chat-app-ucz4.onrender.com/file/filestored/${groupId}`,formData,
->>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
+
            {headers:{'Authorization':token,'Content-Type': 'multipart/form-data'}});
 
       console.log('file name',fileStored.data.fileName);
