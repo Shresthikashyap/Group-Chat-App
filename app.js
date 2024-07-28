@@ -34,7 +34,11 @@ app.use(bodyParser.urlencoded({extended: true}));  //entend: true => precises th
 //     origin:"http://13.51.156.137",
 // })); 
 
-app.use(express.static('public'));
+app.use(express.static('public', { 
+    dotfiles: 'ignore', 
+    index: false,
+    extensions: ['html', 'htm'] 
+  }));
   
 app.use('/user',userRoutes);
 app.use('/message',chatRoutes);
@@ -56,7 +60,7 @@ Group.hasMany(GroupFiles);
 User.hasMany(ArchievedMessage);
 Group.hasMany(ArchievedMessage);
 
-sequelize.sync({force:true})   // is a way to sync your sequelize model with your database table
+sequelize.sync()   // is a way to sync your sequelize model with your database table
 .then(()=>{        // force: true => recreate the database table , drop the existing ones
     server.listen(3000,()=>{
         console.log('server is listening');
