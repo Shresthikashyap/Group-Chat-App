@@ -24,7 +24,11 @@ window.addEventListener("DOMContentLoaded",async()=>{
             const userId = decodedToken.id;
 
             // if user is admin show the link
+<<<<<<< HEAD
             const checkAdmin = await axios.get(`http://localhost:3000/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
+=======
+            const checkAdmin = await axios.get(`https://group-chat-app-ucz4.onrender.com/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
+>>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
             console.log('haan hun mei admin ',checkAdmin.data.admin)
             if(checkAdmin.data.admin === null){ window.location.href = `group-list.html?groupId=${groupId}`;};
             if(checkAdmin.data.admin.isAdmin === true){ 
@@ -71,7 +75,11 @@ window.addEventListener("DOMContentLoaded",async()=>{
                  group.append(deleteGroup);              
                 }
    
+<<<<<<< HEAD
                     const memberList = await axios.get(`http://localhost:3000/group/memberlist/${groupId}`,{
+=======
+                    const memberList = await axios.get(`https://group-chat-app-ucz4.onrender.com/group/memberlist/${groupId}`,{
+>>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
                         headers:{Authorization:token}
                     })
                     console.log('memberlist',memberList);  //check the data
@@ -84,7 +92,11 @@ window.addEventListener("DOMContentLoaded",async()=>{
                         const user = document.createElement('div'); console.log(member.id)
                          
                         //checking admin by passing the member id
+<<<<<<< HEAD
                         const admin = await axios.get(`http://localhost:3000/admin/checkadmin/${member.id}/${groupId}`,{headers:{Authorization:token}})
+=======
+                        const admin = await axios.get(`https://group-chat-app-ucz4.onrender.com/admin/checkadmin/${member.id}/${groupId}`,{headers:{Authorization:token}})
+>>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
                         console.log(admin.data.admin.isAdmin)
                          if(admin.data.admin.isAdmin === true ){
                           user.textContent = `Admin : ${member.name} - ${member.email} - ${member.phone_number}  `;
@@ -145,7 +157,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
                 
         }
         catch(err){
-            document.getElementById('failure').textContent = 'Something went wrong';
+          console.log(error)
+            //document.getElementById('failure').textContent = 'Something went wrong';
         }
     });
 
@@ -154,7 +167,11 @@ window.addEventListener("DOMContentLoaded",async()=>{
         try{
             console.log(userId,groupId)
             const token = localStorage.getItem('token'); 
+<<<<<<< HEAD
             const removedUser = await axios.get(`http://localhost:3000/admin/removeuser/${userId}/${groupId}`,
+=======
+            const removedUser = await axios.get(`https://group-chat-app-ucz4.onrender.com/admin/removeuser/${userId}/${groupId}`,
+>>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
             {headers:{Authorization:token}});
         
             console.log(removedUser);
@@ -162,7 +179,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
              window.location.href = `group-details.html?groupId=${groupId}`;
         }
         catch(error){
-            document.getElementById('failure').textContent = 'Something went wrong';
+          console.log(error)
+            ///document.getElementById('failure').textContent = 'Something went wrong';
         }
     }
 
@@ -171,7 +189,11 @@ window.addEventListener("DOMContentLoaded",async()=>{
         try{
           console.log(memberId,_groupId)
           const token = localStorage.getItem('token')
+<<<<<<< HEAD
           const adminDetails = await axios.get(`http://localhost:3000/admin/makeadmin/${memberId}/${_groupId}`,
+=======
+          const adminDetails = await axios.get(`https://group-chat-app-ucz4.onrender.com/admin/makeadmin/${memberId}/${_groupId}`,
+>>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
           {headers:{Authorization:token}});
 
           console.log(adminDetails.data);
@@ -180,7 +202,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
           window.location.href = `group-details.html?groupId=${_groupId}`;
         }
         catch(error){
-            document.getElementById('failure').textContent = 'Something went wrong';
+          console.log(error)
+            //document.getElementById('failure').textContent = 'Something went wrong';
         }
     }
 
@@ -189,7 +212,11 @@ window.addEventListener("DOMContentLoaded",async()=>{
       try{
         console.log(memberId,_groupId)
         const token = localStorage.getItem('token')
+<<<<<<< HEAD
         const adminDetails = await axios.get(`http://localhost:3000/admin/removeadmin/${memberId}/${_groupId}`,
+=======
+        const adminDetails = await axios.get(`https://group-chat-app-ucz4.onrender.com/admin/removeadmin/${memberId}/${_groupId}`,
+>>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
         {headers:{Authorization:token}});
 
         console.log(adminDetails.data);
@@ -198,7 +225,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
         window.location.href = `group-details.html?groupId=${_groupId}`;
       }
       catch(error){
-          document.getElementById('failure').textContent = 'Something went wrong';
+        console.log(error)
+          //document.getElementById('failure').textContent = 'Something went wrong';
       }
   }
 
@@ -206,7 +234,11 @@ window.addEventListener("DOMContentLoaded",async()=>{
   const exitGroup = async(userId,groupId) =>{
     try{
       const token = localStorage.getItem('token');
+<<<<<<< HEAD
       const group = await axios.get(`http://localhost:3000/group/exitgroup/${userId}/${groupId}`,{
+=======
+      const group = await axios.get(`https://group-chat-app-ucz4.onrender.com/group/exitgroup/${userId}/${groupId}`,{
+>>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
         headers:{Authorization:token}});
 
         console.log(group.data.message);
@@ -217,7 +249,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
         window.location.href = `group-list.html`;
     }
     catch(error){
-      document.getElementById('failure').textContent = 'Something went wrong';
+      console.log(error)
+      //document.getElementById('failure').textContent = 'Something went wrong';
     }
   }
 
@@ -226,7 +259,11 @@ window.addEventListener("DOMContentLoaded",async()=>{
       try{
           console.log(groupId);
           const token = localStorage.getItem('token'); 
+<<<<<<< HEAD
           const group = await axios.get(`http://localhost:3000/admin/deletegroup/${groupId}`,{
+=======
+          const group = await axios.get(`https://group-chat-app-ucz4.onrender.com/admin/deletegroup/${groupId}`,{
+>>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
             headers:{Authorization:token}});
 
           console.log(group.data.message);
@@ -238,7 +275,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
 
       }
       catch(error){   
-        document.getElementById('failure').textContent = 'Something went wrong';
+        console.log(error)
+        //document.getElementById('failure').textContent = 'Something went wrong';
       }
     }
 
@@ -246,7 +284,11 @@ window.addEventListener("DOMContentLoaded",async()=>{
   const getStoredFiles = async(groupId) => {
       try{
           const token = localStorage.getItem('token'); 
+<<<<<<< HEAD
           const storedFiles = await axios.get(`http://localhost:3000/file/getfiles/${groupId}`,
+=======
+          const storedFiles = await axios.get(`https://group-chat-app-ucz4.onrender.com/file/getfiles/${groupId}`,
+>>>>>>> ed09ce2563c3d70f0434b1f42d43f89b8a760c89
           {headers:{Authorization:token}});
 
           console.log(storedFiles.data);
@@ -274,7 +316,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
       }
       catch(err){
         console.log(err);
-        document.getElementById('failure').textContent = 'Something went wrong';
+        //document.getElementById('failure').textContent = 'Something went wrong';
       }
     }
 

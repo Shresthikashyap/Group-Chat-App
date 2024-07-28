@@ -38,7 +38,7 @@ exports.addUser = async(req, res) => {
 
       console.log(newUser.dataValues);
       const payload = newUser.dataValues;
-      const token = jwt.sign(payload,'mySecretKey')
+      const token = jwt.sign(payload,process.env.SECRET_KEY)
       
       await t.commit();
       res.status(201).json({ name, groupDetails, token });
@@ -84,7 +84,7 @@ exports.getLogin = async(req,res) => {
     }
 
     const payload = user.dataValues;
-    const token = jwt.sign(payload,'mySecretKey');
+    const token = jwt.sign(payload,process.env.SECRET_KEY);
     
     await t.commit();
     res.status(200).json({name,groupDetails,token:token})

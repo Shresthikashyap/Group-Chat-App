@@ -31,14 +31,10 @@ app.use(bodyParser.urlencoded({extended: true}));  //entend: true => precises th
 //The extended option allows to choose between parsing the URL-encoded data with the querystring library (when false ) or the qs library (when true ).
 
 // app.use(cors({
-//     origin:"http://13.51.156.137",
+//     origin:"https://group-chat-app-ucz4.onrender.com",
 // })); 
 
-app.use(express.static('public', { 
-    dotfiles: 'ignore', 
-    index: false,
-    extensions: ['html', 'htm'] 
-  }));
+app.use(express.static('public'));
   
 app.use('/user',userRoutes);
 app.use('/message',chatRoutes);
@@ -60,9 +56,9 @@ Group.hasMany(GroupFiles);
 User.hasMany(ArchievedMessage);
 Group.hasMany(ArchievedMessage);
 
-sequelize.sync()   // is a way to sync your sequelize model with your database table
+sequelize.sync({force:true})   // is a way to sync your sequelize model with your database table
 .then(()=>{        // force: true => recreate the database table , drop the existing ones
-    server.listen(3000,()=>{
+    server.listen(port,()=>{
         console.log('server is listening');
     })
 
