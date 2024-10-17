@@ -22,14 +22,13 @@ const save = async(event)=>{
     }
 
         let response;
+        const apiUrl = process.env.API_URL || 'http://localhost:3000';
         
         if(groupId){
-
-            response = await axios.post(`https://group-chat-app-4a7q.onrender.com/user/signup?groupId=${groupId}`,obj);
+            response = await axios.post(`${apiUrl}/user/signup?groupId=${groupId}`,obj);
         }
         else{
-            response = await axios.post("https://group-chat-app-4a7q.onrender.com/user/signup",obj);
-
+            response = await axios.post(`${apiUrl}/user/signup`,obj);
         }
         
        console.log(response); 

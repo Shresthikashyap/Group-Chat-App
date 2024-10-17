@@ -14,10 +14,11 @@ window.addEventListener("DOMContentLoaded",async()=>{
         const token = localStorage.getItem('token');
         const decodedToken = parseJwt(token);
         const userId = decodedToken.id;
+        const apiUrl = process.env.API_URL || 'http://localhost:3000';
 
             // group list for members and admin
 
-            const groups = await axios.get(`https://group-chat-app-4a7q.onrender.com/group/group-list/${userId}`,{headers:{Authorization:token}}) 
+            const groups = await axios.get(`${apiUrl}/group/group-list/${userId}`,{headers:{Authorization:token}}) 
             console.log('Group list ',groups);
             const groupList = document.getElementById('groupList');
             groups.data.list.forEach((group) => {
@@ -35,10 +36,10 @@ window.addEventListener("DOMContentLoaded",async()=>{
                       localStorage.setItem('groupName', groupName);
 
 
-                      const admin = await axios.get(`https://group-chat-app-4a7q.onrender.com/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
+                      const admin = await axios.get(`${apiUrl}/admin/checkadmin/${userId}/${groupId}`,{headers:{Authorization:token}})
                       
                       if(admin.data.admin.isAdmin === true) 
-                      { localStorage.setItem('link',`https://group-chat-app-4a7q.onrender.com/signup.html?groupId=${groupId}`)}
+                      { localStorage.setItem('link',`${apiUrl}/signup.html?groupId=${groupId}`)}
                       else{ localStorage.removeItem('link') }
                     window.location.href = `group-chat.html?groupId=${groupId}`;
                     }); 

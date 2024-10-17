@@ -23,10 +23,10 @@ const newGroup = async(event) =>{
         
         const token = localStorage.getItem('token');
         const decodedToken = await parseJwt(token);
-        const userId = decodedToken.id
+        const userId = decodedToken.id;
+        const apiUrl = process.env.API_URL || 'http://localhost:3000';
 
-
-        const response = await axios.post(`https://group-chat-app-4a7q.onrender.com/group/new-group/${userId}`,newGroupDetails,{
+        const response = await axios.post(`${apiUrl}/group/new-group/${userId}`,newGroupDetails,{
             headers:{'Authorization':token}
         });
 
@@ -35,7 +35,7 @@ const newGroup = async(event) =>{
         localStorage.setItem('groupName',response.data.newGroupDetails.groupName);
         const groupId = response.data.newGroupDetails.id;
 
-        localStorage.setItem('link',`https://group-chat-app-4a7q.onrender.com/signup.html?groupId=${groupId}`) // group link to share 
+        localStorage.setItem('link',`${apiUrl}/signup.html?groupId=${groupId}`) // group link to share 
         window.location.href = `group-chat.html?groupId=${groupId}`;
     }
     catch(error){

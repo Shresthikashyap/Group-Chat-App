@@ -14,12 +14,13 @@ const save = async(event) =>{
         }
 
         let response;
+        const apiUrl = process.env.API_URL || 'http://localhost:3000';
 
         if(groupId){
 
-            response = await axios.post(`https://group-chat-app-4a7q.onrender.com/user/login?groupId=${groupId}`,loginDetails);
+            response = await axios.post(`${apiUrl}/user/login?groupId=${groupId}`,loginDetails);
         }else{
-            response = await axios.post("https://group-chat-app-4a7q.onrender.com/user/login",loginDetails);
+            response = await axios.post(`${apiUrl}/user/login`,loginDetails);
         }
         
         console.log('response',response)

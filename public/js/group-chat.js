@@ -1,3 +1,5 @@
+const apiUrl = process.env.API_URL || 'http://localhost:3000'; //api
+
 const socket = io(); // Initialize a WebSocket connection
 
 // Listen for a 'connect' event when the WebSocket connection is established
@@ -57,7 +59,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
             if(groupid !== null){
               console.log('**************here')
             
-            const checkAdmin = await axios.get(`https://group-chat-app-4a7q.onrender.com/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
+            const checkAdmin = await axios.get(`${apiUrl}/admin/checkadmin/${userId}/${groupid}`,{headers:{Authorization:token}})
 
 
             if(checkAdmin.data.admin.isAdmin === true){ 
@@ -116,7 +118,7 @@ const getMessages = async (lastMsgId,groupId) => {
     console.log(lastMsgId);
     const token = localStorage.getItem("token");
 
-    const response = await axios.get(`https://group-chat-app-4a7q.onrender.com/message/get-message/${lastMsgId}/${groupId}`,
+    const response = await axios.get(`${apiUrl}/message/get-message/${lastMsgId}/${groupId}`,
     { headers: { Authorization: token }});
         
     console.log('get meassage ',response)
@@ -150,7 +152,7 @@ const send = async(event) => {
 
          const msgDetails={ id,name, message }
           
-         const response = await axios.post(`https://group-chat-app-4a7q.onrender.com/message/post-message/${groupId}`,msgDetails,
+         const response = await axios.post(`${apiUrl}/message/post-message/${groupId}`,msgDetails,
 
          {headers:{'Authorization':token}});
 
@@ -214,7 +216,7 @@ fileInput.addEventListener('input', handleSelectedFile = async(event) => {
 
       const token = localStorage.getItem('token');
 
-      const fileStored = await axios.post(`https://group-chat-app-4a7q.onrender.com/file/filestored/${groupId}`,formData,
+      const fileStored = await axios.post(`${apiUrl}/file/filestored/${groupId}`,formData,
 
            {headers:{'Authorization':token,'Content-Type': 'multipart/form-data'}});
 
