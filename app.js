@@ -41,7 +41,7 @@ app.use(express.static('public', {
   }));
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html'); // Adjust the path if your file is located elsewhere
+    res.sendFile(__dirname + '/public/login.html'); // Adjust the path if your file is located elsewhere
 });
   
 app.use('/user',userRoutes);
