@@ -7,6 +7,7 @@
   },
   "scripts": {
     "start": "node app.js",
+    "postinstall": "npm install mysql2",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Shresthi",
@@ -24,7 +25,6 @@
     "init": "^0.1.2",
     "jsonwebtoken": "^9.0.0",
     "multer": "^1.4.5-lts.1",
-    "mysql": "^2.18.1",
     "mysql2": "^3.2.4",
     "node-cron": "^3.0.2",
     "sequelize": "^6.31.0",
