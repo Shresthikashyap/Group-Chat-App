@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser'); 
 const sequelize = require('./util/database');
 const http = require('http');
+const path = require('path');
 const socketio = require('socket.io');
 const cron = require('node-cron');
 
@@ -36,15 +37,21 @@ app.use(cors({
     origin:"*",
 })); 
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get('/api/config', (req, res) => {
     res.json({ apiUrl: process.env.API_URL || 'http://localhost:3000' });
 });
 
-app.use(express.static('public', { 
-    dotfiles: 'ignore', 
-    index: false,
-    extensions: ['html', 'htm'] 
-  }));
+// app.use(express.static('public', { 
+//     dotfiles: 'ignore', 
+//     index: false,
+//     extensions: ['html', 'htm'] 
+//   }));/
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/login.html'); // Adjust the path if your file is located elsewhere
+});
 
   
 app.use('/user',userRoutes);
