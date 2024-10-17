@@ -1,3 +1,10 @@
+// get the api url
+async function getApiUrl() {
+    const response = await fetch('/api/config');
+    const data = await response.json();
+    return data.apiUrl;
+};
+
 /********************  decode the token  *****************/
 function parseJwt (token) {
     var base64Url = token.split('.')[1];
@@ -14,7 +21,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
         const token = localStorage.getItem('token');
         const decodedToken = parseJwt(token);
         const userId = decodedToken.id;
-        const apiUrl = process.env.API_URL || 'http://localhost:3000';
+        const apiUrl = await getApiUrl();
 
             // group list for members and admin
 

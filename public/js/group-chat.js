@@ -1,4 +1,11 @@
-const apiUrl = process.env.API_URL || 'http://localhost:3000'; //api
+// get the api url
+async function getApiUrl() {
+  const response = await fetch('/api/config');
+  const data = await response.json();
+  return data.apiUrl;
+};
+
+const apiUrl = await getApiUrl();
 
 const socket = io(); // Initialize a WebSocket connection
 

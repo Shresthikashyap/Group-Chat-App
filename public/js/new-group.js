@@ -1,3 +1,10 @@
+// get the api url
+async function getApiUrl() {
+    const response = await fetch('/api/config');
+    const data = await response.json();
+    return data.apiUrl;
+};
+
 
 /********************  decode the token  *****************/
 function parseJwt (token) {
@@ -24,7 +31,7 @@ const newGroup = async(event) =>{
         const token = localStorage.getItem('token');
         const decodedToken = await parseJwt(token);
         const userId = decodedToken.id;
-        const apiUrl = process.env.API_URL || 'http://localhost:3000';
+        let apiUrl = await getApiUrl();
 
         const response = await axios.post(`${apiUrl}/group/new-group/${userId}`,newGroupDetails,{
             headers:{'Authorization':token}

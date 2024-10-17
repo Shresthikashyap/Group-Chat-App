@@ -1,3 +1,12 @@
+// Fetch the API URL from the backend
+async function getApiUrl() {
+        const response = await fetch('/api/config');
+        const data = await response.json();
+        return data.apiUrl;
+};
+
+
+// get the url 
 const urlSearchParams = new URLSearchParams(window.location.search);
 const groupId = urlSearchParams.get('groupId');
 console.log(groupId)
@@ -21,13 +30,17 @@ const save = async(event)=>{
         name, email, phonenumber, password
     }
 
-        let response;
-        const apiUrl = process.env.API_URL || 'http://localhost:3000';
+    let apiUrl = await getApiUrl();
+    console.log(apiUrl)
+    //const apiUrl = process.env.API_URL || `http://localhost:3000`;
+    
+    let response;    
         
         if(groupId){
             response = await axios.post(`${apiUrl}/user/signup?groupId=${groupId}`,obj);
         }
         else{
+            console.log(name, email, phonenumber, password)
             response = await axios.post(`${apiUrl}/user/signup`,obj);
         }
         
