@@ -61,9 +61,11 @@ Group.hasMany(GroupFiles);
 User.hasMany(ArchievedMessage);
 Group.hasMany(ArchievedMessage);
 
+const PORT = process.env.PORT || 3000;
+
 sequelize.sync()   // is a way to sync your sequelize model with your database table
 .then(()=>{        // force: true => recreate the database table , drop the existing ones
-    server.listen(3000,()=>{
+    server.listen(PORT,()=>{
         console.log('server is listening');
     })
 
