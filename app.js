@@ -40,6 +40,9 @@ app.use(express.static('public', {
     extensions: ['html', 'htm'] 
   }));
 
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/index.html'); // Adjust the path if your file is located elsewhere
+});
   
 app.use('/user',userRoutes);
 app.use('/message',chatRoutes);
