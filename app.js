@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded({extended: true}));  //entend: true => precises th
 const io = socketio(server, {
     path: '/socket.io',  // Optional: Set path explicitly to avoid issues
     cors: {
-        origin: (process.env.API_URL||'http://localhost:3000') ,  // Set your frontend URL here from the .env file
+        origin: (process.env.API_URL) ,  // Set your frontend URL here from the .env file
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
         credentials: true
     }
