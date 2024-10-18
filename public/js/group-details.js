@@ -5,8 +5,6 @@ async function getApiUrl() {
   return data.apiUrl;
 };
 
-const apiUrl = await getApiUrl();
-
 /********************  decode the token  *****************/
 function parseJwt (token) {
     var base64Url = token.split('.')[1];
@@ -28,6 +26,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
               group.textContent = `${groupName}  `;
             }
 
+            const apiUrl = await getApiUrl();
             const token = localStorage.getItem('token');
             const decodedToken = await parseJwt(token);
             const userId = decodedToken.id;
@@ -166,6 +165,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
     const removeMember = async(userId,groupId) =>{
         try{
             console.log(userId,groupId)
+            const apiUrl = await getApiUrl();
             const token = localStorage.getItem('token'); 
 
             const removedUser = await axios.get(`${apiUrl}/admin/removeuser/${userId}/${groupId}`,
@@ -185,6 +185,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
     const newAdmin = async(memberId, _groupId) => {
         try{
           console.log(memberId,_groupId)
+          const apiUrl = await getApiUrl();
           const token = localStorage.getItem('token')
           const adminDetails = await axios.get(`${apiUrl}/admin/makeadmin/${memberId}/${_groupId}`,
           {headers:{Authorization:token}});
@@ -204,6 +205,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
     const removeAdmin = async(memberId, _groupId) => {
       try{
         console.log(memberId,_groupId)
+        const apiUrl = await getApiUrl();
         const token = localStorage.getItem('token')
 
         const adminDetails = await axios.get(`${apiUrl}/admin/removeadmin/${memberId}/${_groupId}`,
@@ -223,6 +225,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
   //exit from group
   const exitGroup = async(userId,groupId) =>{
     try{
+      const apiUrl = await getApiUrl();
       const token = localStorage.getItem('token');
 
       const group = await axios.get(`${apiUrl}/group/exitgroup/${userId}/${groupId}`,{
@@ -245,6 +248,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
     const deleteTheGroup = async(groupId) => {
       try{
           console.log(groupId);
+          const apiUrl = await getApiUrl();
           const token = localStorage.getItem('token'); 
 
           const group = await axios.get(`${apiUrl}/admin/deletegroup/${groupId}`,{
@@ -267,6 +271,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
     //get stored file
   const getStoredFiles = async(groupId) => {
       try{
+          const apiUrl = await getApiUrl();
           const token = localStorage.getItem('token'); 
 
           const storedFiles = await axios.get(`${apiUrl}/file/getfiles/${groupId}`,
