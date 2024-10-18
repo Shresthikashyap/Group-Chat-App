@@ -29,9 +29,6 @@ const multer = require('multer');
 const upload = multer();
 
 require('dotenv').config({ path: './.env' });
-app.use(bodyParser.json());   // bodyParser.json is used to parse incoming HTTP request bodies that are in JSON format
-app.use(bodyParser.urlencoded({extended: true}));  //entend: true => precises that the req.body object will contain values of any type instead of just strings
-//The extended option allows to choose between parsing the URL-encoded data with the querystring library (when false ) or the qs library (when true ).
 
 const io = socketio(server, {
     path: '/socket.io',  // Optional: Set path explicitly to avoid issues
@@ -42,6 +39,18 @@ const io = socketio(server, {
     },
     transports: ['websocket', 'polling']
 });
+
+app.use(bodyParser.json());   // bodyParser.json is used to parse incoming HTTP request bodies that are in JSON format
+app.use(bodyParser.urlencoded({extended: true}));  //entend: true => precises that the req.body object will contain values of any type instead of just strings
+//The extended option allows to choose between parsing the URL-encoded data with the querystring library (when false ) or the qs library (when true ).
+
+app.use(cors({
+    origin: process.env.API_URL, // Frontend URL
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    credentials: true
+}));
+
+app.options('*', cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
