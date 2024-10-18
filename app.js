@@ -38,7 +38,6 @@ const io = socketio(server, {
     cors: {
         origin: (process.env.API_URL) ,  // Set your frontend URL here from the .env file
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-        allowedHeaders: ['Content-Type', 'Authorization'], // Allow the necessary headers
         credentials: true
     },
     transports: ['websocket', 'polling']
