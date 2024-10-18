@@ -39,7 +39,8 @@ const io = socketio(server, {
         origin: (process.env.API_URL) ,  // Set your frontend URL here from the .env file
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
         credentials: true
-    }
+    },
+    transports: ['websocket', 'polling']
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
