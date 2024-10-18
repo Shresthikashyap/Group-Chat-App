@@ -5,8 +5,6 @@ async function getApiUrl() {
   return data.apiUrl;
 };
 
-const apiUrl = await getApiUrl();
-
 const socket = io(); // Initialize a WebSocket connection
 
 // Listen for a 'connect' event when the WebSocket connection is established
@@ -37,6 +35,7 @@ function parseJwt (token) {
 window.addEventListener("DOMContentLoaded",async()=>{
     try {
             //const name = localStorage.getItem("name");
+            const apiUrl = await getApiUrl();
             const groupName = localStorage.getItem("groupName"); 
             const groupid = localStorage.getItem('groupid');           
            
@@ -123,6 +122,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
 const getMessages = async (lastMsgId,groupId) => {
  try {
     console.log(lastMsgId);
+    const apiUrl = await getApiUrl();
     const token = localStorage.getItem("token");
 
     const response = await axios.get(`${apiUrl}/message/get-message/${lastMsgId}/${groupId}`,
@@ -148,6 +148,7 @@ const send = async(event) => {
     try{
          event.preventDefault();
          
+         const apiUrl = await getApiUrl();
          const token = localStorage.getItem('token');
          const decodedToken = await  parseJwt(token); 
          const id = decodedToken.id;
@@ -177,6 +178,7 @@ const send = async(event) => {
 async function showMessage(data){
   try{
     console.log('Data ',data);
+    const apiUrl = await getApiUrl();
     const token = localStorage.getItem("token");
     const decodedToken = await parseJwt(token);
     const userId = decodedToken.id;
@@ -221,6 +223,7 @@ fileInput.addEventListener('input', handleSelectedFile = async(event) => {
       const groupId = localStorage.getItem('groupid');
       console.log('groupId',groupId)
 
+      const apiUrl = await getApiUrl();
       const token = localStorage.getItem('token');
 
       const fileStored = await axios.post(`${apiUrl}/file/filestored/${groupId}`,formData,
