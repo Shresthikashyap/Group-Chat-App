@@ -24,7 +24,7 @@ const fileRoutes = require('./routes/group-files');
 var cors = require('cors');
 const app = express();
 const server = http.createServer(app);   // create a server instance
-const io = socketio(server);         // initialize socket.io
+//const io = socketio(server);         // initialize socket.io
 const multer = require('multer');
 const upload = multer();
 
@@ -33,9 +33,14 @@ app.use(bodyParser.json());   // bodyParser.json is used to parse incoming HTTP 
 app.use(bodyParser.urlencoded({extended: true}));  //entend: true => precises that the req.body object will contain values of any type instead of just strings
 //The extended option allows to choose between parsing the URL-encoded data with the querystring library (when false ) or the qs library (when true ).
 
-app.use(cors({
-    origin:"*",
-})); 
+const io = socketio(server, {
+    path: '/socket.io',  // Optional: Set path explicitly to avoid issues
+    cors: {
+        origin: (process.env.API_URL || 'http://localhost:3000') ,  // Set your frontend URL here from the .env file
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+        credentials: true
+    }
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
 
