@@ -35,8 +35,10 @@ const io = socketio(server, {
     cors: {
         origin: (process.env.API_URL) ,  // Set your frontend URL here from the .env file
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-        credentials: true
-    }
+        credentials: true,
+        allowedHeaders: ['Authorization', 'Content-Type'],
+    },
+    transports: ['websocket', 'polling']  // Ensure these transports are enabled
 });
 
 app.use(bodyParser.json());   // bodyParser.json is used to parse incoming HTTP request bodies that are in JSON format
