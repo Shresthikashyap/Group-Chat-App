@@ -5,8 +5,10 @@ async function getApiUrl() {
   return data.apiUrl;
 };
 
-const socket = io({ path: '/socket.io',
-    transports: ['websocket', 'polling']  // Set these explicitly});  // Match the server's transport methods
+const socket = io({
+    path: '/socket.io',
+    transports: ['websocket', 'polling']  // Set these explicitly
+});
 
 // Listen for a 'connect' event when the WebSocket connection is established
 socket.on('connect', ()=>{
