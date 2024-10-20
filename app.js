@@ -33,7 +33,7 @@ require('dotenv').config({ path: './.env' });
 const io = socketio(server, {
     path: '/socket.io',  // Optional: Set path explicitly to avoid issues
     cors: {
-        origin: (process.env.API_URL) ,  // Set your frontend URL here from the .env file
+        origin: (process.env.API_URL || 'http://localhost:3000') ,  // Set your frontend URL here from the .env file
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
         credentials: true,
         allowedHeaders: ['Authorization', 'Content-Type'],
@@ -45,13 +45,13 @@ app.use(bodyParser.json());   // bodyParser.json is used to parse incoming HTTP 
 app.use(bodyParser.urlencoded({extended: true}));  //entend: true => precises that the req.body object will contain values of any type instead of just strings
 //The extended option allows to choose between parsing the URL-encoded data with the querystring library (when false ) or the qs library (when true ).
 
-app.use(cors({
-    origin: process.env.API_URL, // Frontend URL
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-    credentials: true
-}));
+// app.use(cors({
+//     origin: process.env.API_URL, // Frontend URL
+//     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+//     credentials: true
+// }));
 
-app.options('*', cors());
+//app.options('*', cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
